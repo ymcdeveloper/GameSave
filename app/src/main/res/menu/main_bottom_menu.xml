@@ -12,7 +12,7 @@
         android:title="My games"/>
 
     <item
-        android:id="@+id/menu_settings"
+        android:id="@+id/menu_info"
         android:icon="@drawable/ic_info"
         android:title="Info"/>
 
