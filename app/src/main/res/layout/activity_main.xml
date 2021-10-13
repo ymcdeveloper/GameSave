@@ -20,6 +20,7 @@
         app:menu="@menu/main_bottom_menu"
         android:background="#FF9800"
         app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"/>
+        app:itemTextColor="@color/white"
+        app:itemHorizontalTranslationEnabled="true"/>
 
 </RelativeLayout>

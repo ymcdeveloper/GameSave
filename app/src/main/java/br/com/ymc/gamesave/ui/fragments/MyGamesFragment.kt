@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import br.com.ymc.gamesave.databinding.FragmentMyGamesBinding
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
+import br.com.ymc.gamesave.viewModels.MyGamesViewModel
 
 class MyGamesFragment : Fragment()
 {
@@ -18,7 +20,7 @@ class MyGamesFragment : Fragment()
 
     private val viewModel : AllGamesViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         _binding = FragmentMyGamesBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -30,10 +32,6 @@ class MyGamesFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
 
         Toast.makeText(context, "My games", Toast.LENGTH_SHORT).show()
-
-        viewModel.typedValue.observe(viewLifecycleOwner, {
-            binding.txtValue.text = it
-        })
     }
 
     override fun onDestroyView()

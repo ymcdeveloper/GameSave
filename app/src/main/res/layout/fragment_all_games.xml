@@ -6,24 +6,6 @@
     android:orientation="vertical"
     tools:context=".ui.activities.fragments.AllGamesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/txt_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="TODOS OS JOGOS"
-        android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btTest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Increase" />
 
 </LinearLayout>

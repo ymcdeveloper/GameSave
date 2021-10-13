@@ -1,10 +1,9 @@
 package br.com.ymc.gamesave.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityMainBinding
 import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
@@ -41,13 +40,6 @@ class MainActivity : AppCompatActivity()
             }
             true
         }
-
-        viewModel.badgeCountLiveData.observe(this, {
-            if(it > 0)
-            {
-                binding.bottomNavigation.getOrCreateBadge(R.id.menu_my_games).number = it
-            }
-        })
     }
 
     private fun replaceFragment(fragment: Fragment)

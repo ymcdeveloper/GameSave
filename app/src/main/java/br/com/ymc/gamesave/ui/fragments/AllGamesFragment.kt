@@ -29,13 +29,6 @@ class AllGamesFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
 
         Toast.makeText(context, "All games", Toast.LENGTH_SHORT).show()
-
-        binding.txtTest.text = "Teste Daniel"
-
-        binding.btTest.setOnClickListener {
-            viewModel.increaseBadge()
-            viewModel.saveValue(binding.editText.text.toString())
-        }
     }
 
     override fun onDestroyView()
