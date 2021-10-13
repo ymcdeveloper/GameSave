@@ -1,10 +1,10 @@
-package br.com.ymc.gamesave
+package br.com.ymc.gamesave.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import br.com.ymc.gamesave.fragments.AllGamesFragment
-import br.com.ymc.gamesave.fragments.MyGamesFragment
-import java.io.File
+import br.com.ymc.gamesave.R
+import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
+import br.com.ymc.gamesave.ui.activities.fragments.MyGamesFragment
 
 class MainActivity : AppCompatActivity()
 {
