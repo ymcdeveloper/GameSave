@@ -2,12 +2,15 @@ package br.com.ymc.gamesave.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityMainBinding
 import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
 import br.com.ymc.gamesave.ui.activities.fragments.InfoFragment
 import br.com.ymc.gamesave.ui.activities.fragments.MyGamesFragment
+import br.com.ymc.gamesave.viewModels.AllGamesViewModel
 
 class MainActivity : AppCompatActivity()
 {
@@ -16,6 +19,8 @@ class MainActivity : AppCompatActivity()
     private val allGamesFragment = AllGamesFragment()
     private val myGamesFragment = MyGamesFragment()
     private val infoFragment = InfoFragment()
+
+    private val viewModel : AllGamesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -37,7 +42,12 @@ class MainActivity : AppCompatActivity()
             true
         }
 
-        binding.bottomNavigation.getOrCreateBadge(R.id.menu_my_games).number = 1000
+        viewModel.badgeCountLiveData.observe(this, {
+            if(it > 0)
+            {
+                binding.bottomNavigation.getOrCreateBadge(R.id.menu_my_games).number = it
+            }
+        })
     }
 
     private fun replaceFragment(fragment: Fragment)
