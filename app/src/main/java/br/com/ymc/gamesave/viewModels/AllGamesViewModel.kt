@@ -1,14 +1,25 @@
 package br.com.ymc.gamesave.viewModels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.com.ymc.gamesave.util.Const
+import androidx.lifecycle.viewModelScope
+import br.com.ymc.gamesave.network.repository.ServiceRepository
+import br.com.ymc.gamesave.util.BASE_URL
+import dagger.Provides
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AllGamesViewModel : ViewModel()
+@HiltViewModel
+class AllGamesViewModel @Inject constructor(private val serviceRepository: ServiceRepository) : ViewModel()
 {
-    fun test()
+    fun callGamesApi()
     {
+        viewModelScope.launch {
+            serviceRepository.getGames()
+        }
 
     }
 }

@@ -10,7 +10,9 @@ import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
 import br.com.ymc.gamesave.ui.activities.fragments.InfoFragment
 import br.com.ymc.gamesave.ui.activities.fragments.MyGamesFragment
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity()
 {
     private lateinit var binding : ActivityMainBinding

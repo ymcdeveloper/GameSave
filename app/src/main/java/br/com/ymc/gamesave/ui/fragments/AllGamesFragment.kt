@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import br.com.ymc.gamesave.databinding.FragmentAllGamesBinding
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AllGamesFragment : Fragment()
 {
     private var _binding: FragmentAllGamesBinding? = null
@@ -28,7 +30,7 @@ class AllGamesFragment : Fragment()
     {
         super.onViewCreated(view, savedInstanceState)
 
-        Toast.makeText(context, "All games", Toast.LENGTH_SHORT).show()
+        viewModel.callGamesApi()
     }
 
     override fun onDestroyView()
