@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity()
     private val myGamesFragment = MyGamesFragment()
     private val infoFragment = InfoFragment()
 
-    private val viewModel : AllGamesViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)

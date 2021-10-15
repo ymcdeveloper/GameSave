@@ -10,15 +10,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AllGamesViewModel @Inject constructor(private val serviceRepository: ServiceRepository) : ViewModel()
+class GameDetailViewModel @Inject constructor(private val repository: ServiceRepository) : ViewModel()
 {
-    private var _arrGames : MutableLiveData<List<Game>> = MutableLiveData()
-    var arrGames = _arrGames
+    private val _game : MutableLiveData<Game> = MutableLiveData()
+    val game = _game
 
-    fun callGamesApi()
+    var id = -1
+
+    fun getGame(gameId : Int)
     {
-        viewModelScope.launch {
-            serviceRepository.getGames(_arrGames)
+        if(gameId != -1)
+        {
+            viewModelScope.launch {
+                repository.getGameById(gameId, _game)
+            }
         }
     }
 }
