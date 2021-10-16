@@ -1,9 +1,13 @@
 package br.com.ymc.gamesave.adapter
 
+import android.graphics.ColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ItemGamesBinding
 import br.com.ymc.gamesave.model.Game
@@ -38,8 +42,8 @@ class AllGamesAdapter(private val arrData : List<Game>? = null) : RecyclerView.A
 
     class MyViewHolder(binding: ItemGamesBinding) : RecyclerView.ViewHolder(binding.root)
     {
-        private val imgCover = binding.imgCover
-        private val txtName = binding.txtName
+        private val imgCover : ImageView = binding.imgCover
+        private val txtName : TextView = binding.txtName
 
         fun bind(data: Game)
         {
@@ -47,7 +51,12 @@ class AllGamesAdapter(private val arrData : List<Game>? = null) : RecyclerView.A
 
             if(data.cover != null)
             {
-                Glide.with(imgCover).load(Const.URL_IMAGE_THUMB.createImageURL(data.cover.image_id)).into(imgCover)
+                val circularProgressDrawable = CircularProgressDrawable(itemView.context)
+                circularProgressDrawable.strokeWidth = 5f
+                circularProgressDrawable.centerRadius = 30f
+                circularProgressDrawable.start()
+
+                Glide.with(imgCover).load(Const.URL_IMAGE_THUMB.createImageURL(data.cover.image_id)).placeholder(circularProgressDrawable).into(imgCover)
             }
             else
             {
