@@ -4,17 +4,29 @@ import androidx.lifecycle.MutableLiveData
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.network.RestApi
 import br.com.ymc.gamesave.util.Const
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class ServiceRepository @Inject constructor(private val restApi: RestApi)
 {
     suspend fun getGames(arrGamesData : MutableLiveData<List<Game>>)
     {
-        val response = restApi.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where total_rating > 60 & cover != null; sort total_rating desc;")
-
-        if(response.isSuccessful)
+        try
         {
-            arrGamesData.postValue(response.body())
+            val response = restApi.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where total_rating > 60 & cover != null; sort total_rating desc;")
+
+            if(response.isSuccessful)
+            {
+                arrGamesData.postValue(response.body())
+            }
+        }
+        catch (err : Exception)
+        {
+            when(err)
+            {
+                is UnknownHostException -> println("Erro na conexão com internet, e tá tudo bem")
+                else -> println("Outro erro")
+            }
         }
     }
 

@@ -8,17 +8,17 @@ import br.com.ymc.gamesave.model.Game
 @Dao
 interface GameDAO
 {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGame(gameDB: GameDB)
+
     @Query("SELECT * FROM GAME")
     suspend fun selectSavedGames() : List<GameDB>
 
     @Query("SELECT * FROM GAME WHERE id = :id")
-    fun selectGameById(id : Int) : LiveData<GameDB>
+    suspend fun selectGameById(id : Int) : GameDB
 
     @Query("SELECT EXISTS(SELECT * FROM GAME WHERE id = :id)")
     suspend fun gameExists(id : Int) : Boolean
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGame(gameDB: GameDB)
 
     @Delete
     fun deleteGame(gameDB: GameDB)

@@ -11,6 +11,7 @@ import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityGameDetailBinding
 import br.com.ymc.gamesave.model.toGameDB
 import br.com.ymc.gamesave.util.Const
+import br.com.ymc.gamesave.util.Utility
 import br.com.ymc.gamesave.util.createImageURL
 import br.com.ymc.gamesave.util.valueToRating
 import br.com.ymc.gamesave.viewModels.GameDetailViewModel
@@ -37,7 +38,14 @@ class GameDetailActivity : AppCompatActivity()
             gameId = it.getInt(Const.EXTRA_GAME_ID)
 
             gameId?.let { id ->
-                viewModel.getGame(id)
+                if(Utility.isOnline(this))
+                {
+                    viewModel.getGame(id)
+                }
+                else
+                {
+                    viewModel.getGameFromDB(id)
+                }
             }
         }
 
@@ -63,7 +71,10 @@ class GameDetailActivity : AppCompatActivity()
     {
         //Check if game is already added
         viewModel.isGameAdded.observe(this, {
-            hideAppBarFab(binding.fabAdd)
+            if(it)
+            {
+                hideAppBarFab(binding.fabAdd)
+            }
         })
 
         //Observe game called from api

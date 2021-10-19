@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.network.repository.DatabaseRepository
 import br.com.ymc.gamesave.network.repository.ServiceRepository
+import br.com.ymc.gamesave.util.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,12 +32,21 @@ class GameDetailViewModel @Inject constructor(private val repository: ServiceRep
         }
     }
 
+    fun getGameFromDB(gameId : Int)
+    {
+        if(gameId != -1)
+        {
+            viewModelScope.launch {
+                dbRepository.selectGame(gameId, _game)
+            }
+        }
+    }
+
     fun insertGameToDB(game : Game)
     {
         viewModelScope.launch {
             dbRepository.addGame(game)
         }
-
     }
 
     fun checkGameAdded(gameId : Int)

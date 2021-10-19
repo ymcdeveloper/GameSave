@@ -15,9 +15,9 @@ class DatabaseRepository @Inject constructor(private val gameDao: GameDAO)
         gameDao.insertGame(game.toGameDB())
     }
 
-    fun selectGame(id: Int)
+    suspend fun selectGame(id: Int, arrGames : MutableLiveData<Game>)
     {
-        gameDao.selectGameById(id)
+        arrGames.postValue(gameDao.selectGameById(id).toGame())
     }
 
     suspend  fun selectMyGames(arrGames : MutableLiveData<List<Game>>)
