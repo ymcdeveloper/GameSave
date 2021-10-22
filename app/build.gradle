@@ -82,11 +82,14 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     //DataBinding
-    def data_binding = "7.0.2"
+    def data_binding = "7.0.3"
     implementation "androidx.databinding:databinding-adapters:$data_binding"
     implementation "androidx.databinding:databinding-runtime:$data_binding"
     implementation "androidx.databinding:databinding-common:$data_binding"
     implementation "androidx.databinding:viewbinding:$data_binding"
 
     implementation 'com.google.android.material:material:1.4.0'
+
+    //Shape of view (custom shape to any android view)
+    implementation 'io.github.florent37:shapeofview:1.4.7'
 }

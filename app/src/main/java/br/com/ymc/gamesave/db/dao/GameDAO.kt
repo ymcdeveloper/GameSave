@@ -21,5 +21,5 @@ interface GameDAO
     suspend fun gameExists(id : Int) : Boolean
 
     @Delete
-    fun deleteGame(gameDB: GameDB)
+    suspend fun deleteGame(gameDB: GameDB)
 }

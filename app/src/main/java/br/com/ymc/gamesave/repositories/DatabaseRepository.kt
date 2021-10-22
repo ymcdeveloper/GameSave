@@ -1,8 +1,9 @@
-package br.com.ymc.gamesave.network.repository
+package br.com.ymc.gamesave.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.ymc.gamesave.db.dao.GameDAO
+import br.com.ymc.gamesave.db.model.GameDB
 import br.com.ymc.gamesave.db.model.toGame
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.model.toGameDB
@@ -37,5 +38,10 @@ class DatabaseRepository @Inject constructor(private val gameDao: GameDAO)
     suspend fun checkGameExist(id: Int) : Boolean
     {
         return gameDao.gameExists(id)
+    }
+
+    suspend fun deleteGame(game : Game)
+    {
+        gameDao.deleteGame(game.toGameDB())
     }
 }

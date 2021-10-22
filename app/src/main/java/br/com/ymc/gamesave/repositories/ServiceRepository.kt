@@ -1,4 +1,4 @@
-package br.com.ymc.gamesave.network.repository
+package br.com.ymc.gamesave.repositories
 
 import androidx.lifecycle.MutableLiveData
 import br.com.ymc.gamesave.model.Game

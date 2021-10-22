@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityMainBinding
@@ -38,6 +39,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
         binding.searchView.setOnQueryTextListener(this)
 
         setupBottomNavigation()
+
+        myGamesFragment.listener = {
+            replaceFragment(allGamesFragment)
+            binding.bottomNavigation.menu.getItem(0).isChecked = true
+        }
     }
 
     private fun setupBottomNavigation()
@@ -89,8 +95,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
                 binding.searchView.isIconified = false
                 binding.searchView.requestFocus()
             }
-
-
         }
     }
 

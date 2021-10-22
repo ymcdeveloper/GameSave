@@ -1,12 +1,12 @@
 package br.com.ymc.gamesave.viewModels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.network.repository.DatabaseRepository
-import br.com.ymc.gamesave.network.repository.ServiceRepository
-import br.com.ymc.gamesave.util.Utility
+import br.com.ymc.gamesave.repositories.DatabaseRepository
+import br.com.ymc.gamesave.repositories.ServiceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,10 +15,12 @@ import javax.inject.Inject
 class GameDetailViewModel @Inject constructor(private val repository: ServiceRepository, private val dbRepository: DatabaseRepository) : ViewModel()
 {
     private val _game : MutableLiveData<Game> = MutableLiveData()
-    val game = _game
+    val game : LiveData<Game> = _game
 
-    private val _isGameAdded : MutableLiveData<Boolean> = MutableLiveData()
-    val isGameAdded = _isGameAdded
+    private val _isGameAdded : MutableLiveData<Boolean> = MutableLiveData(false)
+    val isGameAdded : LiveData<Boolean> = _isGameAdded
+
+    var gameDeleted : Boolean = false
 
     var id = -1
 
@@ -42,10 +44,10 @@ class GameDetailViewModel @Inject constructor(private val repository: ServiceRep
         }
     }
 
-    fun insertGameToDB(game : Game)
+    fun insertGameToDB()
     {
         viewModelScope.launch {
-            dbRepository.addGame(game)
+            game.value?.let { dbRepository.addGame(it) }
         }
     }
 
@@ -53,6 +55,15 @@ class GameDetailViewModel @Inject constructor(private val repository: ServiceRep
     {
         viewModelScope.launch {
             _isGameAdded.value = dbRepository.checkGameExist(gameId)
+        }
+    }
+
+    fun deleteGame()
+    {
+        viewModelScope.launch {
+            game.value?.let {
+                dbRepository.deleteGame(it)
+            }
         }
     }
 }

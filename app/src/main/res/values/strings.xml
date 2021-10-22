@@ -3,8 +3,10 @@
     <string name="description">Description:</string>
     <string name="game_added">Game added to library!</string>
     <string name="search">Search</string>
-    <string name="search_game">Search game...</string>
+    <string name="search_game">Search game…</string>
     <string name="games_list">Games list</string>
     <string name="my_games">My games</string>
     <string name="info">Info</string>
+    <string name="remove_game">Remove game</string>
+    <string name="game_deleted">Game deleted from library</string>
 </resources>

@@ -1,11 +1,10 @@
 package br.com.ymc.gamesave.viewModels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.network.repository.DatabaseRepository
+import br.com.ymc.gamesave.repositories.DatabaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

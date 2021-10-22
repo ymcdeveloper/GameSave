@@ -22,8 +22,9 @@
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">#595959</item>
+        <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlActivated">#FFDD00</item>
+        <item name="colorControlHighlight">#FFDD00</item>
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.Light.SearchView">

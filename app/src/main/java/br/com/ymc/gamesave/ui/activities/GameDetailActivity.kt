@@ -1,5 +1,8 @@
 package br.com.ymc.gamesave.ui.activities
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,6 +11,8 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityGameDetailBinding
 import br.com.ymc.gamesave.model.toGameDB
@@ -22,7 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GameDetailActivity : AppCompatActivity()
+class GameDetailActivity : AppCompatActivity(), View.OnClickListener
 {
     private lateinit var binding : ActivityGameDetailBinding
     var gameId : Int? = null
@@ -52,20 +57,6 @@ class GameDetailActivity : AppCompatActivity()
 
         setupViewSettings()
         setObservers()
-        setClickListeners()
-    }
-
-    fun setClickListeners()
-    {
-        binding.fabAdd.setOnClickListener {
-            hideAppBarFab(binding.fabAdd)
-
-            viewModel.game.let {
-                viewModel.insertGameToDB(viewModel.game.value!!)
-            }
-
-            Snackbar.make(binding.root, R.string.game_added, Snackbar.LENGTH_LONG).show()
-        }
     }
 
     fun setObservers()
@@ -74,7 +65,13 @@ class GameDetailActivity : AppCompatActivity()
         viewModel.isGameAdded.observe(this, {
             if(it)
             {
-                hideAppBarFab(binding.fabAdd)
+                binding.fabAdd.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.red, null))
+                binding.fabAdd.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_delete))
+            }
+            else
+            {
+                binding.fabAdd.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorSecondary, null))
+                binding.fabAdd.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add))
             }
         })
 
@@ -82,7 +79,6 @@ class GameDetailActivity : AppCompatActivity()
         viewModel.game.observe(this, { game ->
             binding.txtName.text = game.name
             binding.txtSummary.text = game.summary
-            binding.toolbar.title = game.name
             binding.ratingBar.rating = game.total_rating?.valueToRating() ?: 0f
 
             if(game.cover != null)
@@ -104,18 +100,53 @@ class GameDetailActivity : AppCompatActivity()
 
     fun setupViewSettings()
     {
-        binding.collapsingToolbar.isTitleEnabled = false
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        binding.fabAdd.setOnClickListener(this)
+        binding.imgBack.setOnClickListener(this)
 
         binding.ratingBar.isEnabled = false
     }
 
-    private fun hideAppBarFab(fab: FloatingActionButton) {
-        val params = fab.layoutParams as CoordinatorLayout.LayoutParams
-        val behavior = params.behavior as FloatingActionButton.Behavior
-        behavior.isAutoHideEnabled = false
-        fab.hide()
+    override fun onClick(view: View?)
+    {
+        when(view)
+        {
+            binding.fabAdd ->
+            {
+                viewModel.game.let {
+                    if(viewModel.isGameAdded.value!!)
+                    {
+                        viewModel.gameDeleted = true
+                        viewModel.deleteGame()
+                        Snackbar.make(binding.root, R.string.game_deleted, Snackbar.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        viewModel.insertGameToDB()
+                        Snackbar.make(binding.root, R.string.game_added, Snackbar.LENGTH_LONG).show()
+                    }
+                }
+
+                gameId?.let { viewModel.checkGameAdded(it) }
+            }
+
+            binding.imgBack -> onBackPressed()
+        }
     }
+
+    override fun onBackPressed()
+    {
+        if(viewModel.gameDeleted)
+        {
+            setResult(RESULT_OK)
+        }
+
+        finish()
+    }
+
+    //    private fun hideAppBarFab(fab: FloatingActionButton) {
+//        val params = fab.layoutParams as CoordinatorLayout.LayoutParams
+//        val behavior = params.behavior as FloatingActionButton.Behavior
+//        behavior.isAutoHideEnabled = false
+//        fab.hide()
+//    }
 }
