@@ -13,6 +13,7 @@ import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
 import br.com.ymc.gamesave.ui.activities.fragments.InfoFragment
 import br.com.ymc.gamesave.ui.activities.fragments.MyGamesFragment
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
+import br.com.ymc.gamesave.viewModels.MyGamesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
     private val infoFragment = InfoFragment()
 
     private val allGamesViewModel : AllGamesViewModel by viewModels()
+    private val myGamesViewModel : MyGamesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -49,6 +51,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
     private fun setupBottomNavigation()
     {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
+            binding.searchView.visibility = View.GONE
+            binding.lnlSearch.visibility = View.VISIBLE
+            binding.searchView.setQuery("", false)
+
             when(item.itemId)
             {
                 R.id.menu_all_games ->
@@ -101,9 +107,16 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
     override fun onQueryTextChange(searchText: String?): Boolean
     {
         searchText?.let {
-            if(it.length > 1)
+            if(it.isNotEmpty())
             {
-                allGamesViewModel.searchGame(it)
+                if(binding.bottomNavigation.menu.getItem(0).isChecked)
+                {
+                    allGamesViewModel.searchGame(it)
+                }
+                else
+                {
+                    myGamesViewModel.searchGame(it)
+                }
             }
         }
 
@@ -114,7 +127,15 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
     {
         binding.searchView.visibility = View.GONE
         binding.lnlSearch.visibility = View.VISIBLE
-        allGamesViewModel.callGamesApi()
+
+        if(binding.bottomNavigation.menu.getItem(0).isChecked)
+        {
+            allGamesViewModel.callGamesApi()
+        }
+        else
+        {
+            myGamesViewModel.loadGames()
+        }
         return false
     }
 

@@ -15,5 +15,5 @@
         android:id="@+id/menu_info"
         android:icon="@drawable/ic_info_outline"
         android:title="@string/info" />
-    
+
 </menu>

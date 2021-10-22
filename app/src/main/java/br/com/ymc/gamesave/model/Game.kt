@@ -9,7 +9,7 @@ data class Game(
     val cover: Cover?,
     val id: Int,
     val name: String,
-    val summary: String = "",
+    var summary: String?,
     val total_rating: Float?,
     val date : String?
 )
@@ -19,11 +19,16 @@ fun Game.toGameDB() : GameDB
     val sdf = SimpleDateFormat("dd/M/yyyy", Locale("pt", "BR"))
     val currentDate = sdf.format(Date())
 
+    if(this.summary.isNullOrEmpty())
+    {
+        this.summary = ""
+    }
+
     return GameDB(
         id = this.id,
         name = this.name,
         cover_id = this.cover?.image_id,
         date = currentDate,
-        summary = this.summary
+        summary = this.summary!!
     )
 }

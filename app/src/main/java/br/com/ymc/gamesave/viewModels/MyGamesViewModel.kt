@@ -21,4 +21,19 @@ class MyGamesViewModel @Inject constructor(private val repository: DatabaseRepos
             repository.selectMyGames(_arrGames)
         }
     }
+
+    fun searchGame(searchTex : String)
+    {
+        val arrGamesFiltered: List<Game> = _arrGames.value!!.filter {
+            it.name.lowercase().contains(searchTex.lowercase())
+        }
+
+        if(searchTex.length <= 1)
+        {
+            loadGames()
+            return
+        }
+
+        arrGames.postValue(arrGamesFiltered)
+    }
 }
