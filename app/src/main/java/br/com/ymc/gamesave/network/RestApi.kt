@@ -12,4 +12,7 @@ interface RestApi
 
     @POST("games")
     suspend fun getGameById(@Header("Authorization") token: String, @Header("Client-ID") clientId: String, @Query("fields") bodyValues : String) : Response<List<Game>>
+
+    @POST("games")
+    suspend fun searchGame(@Header("Authorization") token: String, @Header("Client-ID") clientId: String, @Query("search") searchQuery : String, @Query("fields") bodyValues : String) : Response<List<Game>>
 }

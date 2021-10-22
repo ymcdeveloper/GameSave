@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -88,6 +89,12 @@ class GameDetailActivity : AppCompatActivity()
             {
                 Glide.with(this)
                     .load(Const.URL_IMAGE_THUMB.createImageURL(game.cover.image_id))
+                    .into(binding.imgCover)
+            }
+            else
+            {
+                Glide.with(this)
+                    .load(R.drawable.ic_no_image)
                     .into(binding.imgCover)
             }
 

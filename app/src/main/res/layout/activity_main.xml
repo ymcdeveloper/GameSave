@@ -4,23 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.activities.MainActivity"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:id="@+id/lnlHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:id="@+id/lnlSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txtHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text="Games list"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:fontFamily="@font/montserrat_bold"/>
+
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search"/>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:searchIcon="@drawable/ic_search"
+            app:queryHint="@string/search_game"
+            app:defaultQueryHint="@string/search_game"
+            app:closeIcon="@drawable/ic_baseline_close_24"
+            app:searchHintIcon="@drawable/ic_search"
+            app:theme="@style/SearchViewStyle"
+            />
+
+    </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"/>
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@+id/lnlHeader"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemHorizontalTranslationEnabled="true"
+        android:theme="@style/Widget.BottomNavigationView"
+        app:itemIconTint="@color/navigation_selector"
+        app:itemTextColor="@color/navigation_selector"
         app:menu="@menu/main_bottom_menu"
-        android:background="#FF9800"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:itemHorizontalTranslationEnabled="true"/>
+        app:itemRippleColor="@color/gray"/>
 
 </RelativeLayout>

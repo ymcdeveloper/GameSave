@@ -13,7 +13,7 @@ class ServiceRepository @Inject constructor(private val restApi: RestApi)
     {
         try
         {
-            val response = restApi.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where total_rating > 60 & cover != null; sort total_rating desc;")
+            val response = restApi.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where total_rating > 60 & cover != null & category = 0; sort total_rating desc;")
 
             if(response.isSuccessful)
             {
@@ -37,6 +37,16 @@ class ServiceRepository @Inject constructor(private val restApi: RestApi)
         if(response.isSuccessful)
         {
             game.postValue(response.body()?.get(0))
+        }
+    }
+
+    suspend fun getGameBySearch(searchQuery : String, arrGamesData : MutableLiveData<List<Game>>)
+    {
+        val response = restApi.searchGame(Const.TOKEN, Const.CLIENT_ID, searchQuery,"name, cover.image_id; limit 500; where category = 0;")
+
+        if(response.isSuccessful)
+        {
+            arrGamesData.postValue(response.body())
         }
     }
 }
