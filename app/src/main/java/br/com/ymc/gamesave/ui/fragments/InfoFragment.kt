@@ -24,8 +24,6 @@ class InfoFragment : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
-
-        Toast.makeText(context, "info", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView()

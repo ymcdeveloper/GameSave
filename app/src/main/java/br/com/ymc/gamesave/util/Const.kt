@@ -11,6 +11,9 @@ object Const
 
     //EXTRAS
     const val EXTRA_GAME_ID = "EXTRA_GAME_ID"
+
+    //REQUESTS
+    const val REQUEST_DETAIL_ACTIVITY = 100
 }
 
 

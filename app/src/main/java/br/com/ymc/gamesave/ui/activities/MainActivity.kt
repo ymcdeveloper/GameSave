@@ -1,13 +1,17 @@
 package br.com.ymc.gamesave.ui.activities
 
 import android.os.Bundle
+import android.view.DragEvent
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import br.com.ymc.gamesave.R
+import br.com.ymc.gamesave.adapter.MainViewPagerAdapter
 import br.com.ymc.gamesave.databinding.ActivityMainBinding
 import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
 import br.com.ymc.gamesave.ui.activities.fragments.InfoFragment
@@ -29,13 +33,18 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
     private val allGamesViewModel : AllGamesViewModel by viewModels()
     private val myGamesViewModel : MyGamesViewModel by viewModels()
 
+    val fragments: ArrayList<Fragment> = arrayListOf(
+        allGamesFragment,
+        myGamesFragment,
+        infoFragment
+    )
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(allGamesFragment)
         binding.imgSearch.setOnClickListener(this)
         binding.searchView.setOnCloseListener(this)
         binding.searchView.setOnQueryTextListener(this)
@@ -43,51 +52,68 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
         setupBottomNavigation()
 
         myGamesFragment.listenerAddGames = {
-            replaceFragment(allGamesFragment)
+            binding.viewPager.currentItem = 0
             binding.bottomNavigation.menu.getItem(0).isChecked = true
+        }
+
+        setupViewPager()
+    }
+
+    private fun setupViewPager()
+    {
+        binding.viewPager.offscreenPageLimit = 3
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int)
+            {
+                onNavigationItemSelected(binding.bottomNavigation.menu.getItem(position))
+                binding.bottomNavigation.menu.getItem(position).isChecked = true
+            }
+        })
+
+        val viewPagerAdapter = MainViewPagerAdapter(fragments, this)
+
+        binding.viewPager.apply {
+            adapter = viewPagerAdapter
         }
     }
 
     private fun setupBottomNavigation()
     {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
-            binding.searchView.visibility = View.GONE
-            binding.lnlSearch.visibility = View.VISIBLE
-            binding.searchView.setQuery("", false)
-
-            when(item.itemId)
-            {
-                R.id.menu_all_games ->
-                {
-                    binding.txtHeader.text = getString(R.string.games_list)
-                    binding.imgSearch.visibility = View.VISIBLE
-                    replaceFragment(allGamesFragment)
-                }
-
-                R.id.menu_my_games ->
-                {
-                    binding.txtHeader.text = getString(R.string.my_games)
-                    binding.imgSearch.visibility = View.VISIBLE
-                    replaceFragment(myGamesFragment)
-                }
-
-                R.id.menu_info ->
-                {
-                    binding.txtHeader.text = getString(R.string.info)
-                    binding.imgSearch.visibility = View.GONE
-                    replaceFragment(infoFragment)
-                }
-            }
+            onNavigationItemSelected(item)
             true
         }
     }
 
-    private fun replaceFragment(fragment: Fragment?)
+    fun onNavigationItemSelected(menuItem : MenuItem)
     {
-        fragment?.let {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, it)
-            transaction.commit()
+        binding.searchView.visibility = View.GONE
+        binding.lnlSearch.visibility = View.VISIBLE
+        binding.searchView.setQuery("", false)
+
+        when(menuItem.itemId)
+        {
+            R.id.menu_all_games ->
+            {
+                binding.txtHeader.text = getString(R.string.games_list)
+                binding.imgSearch.visibility = View.VISIBLE
+                binding.viewPager.currentItem = 0
+            }
+
+            R.id.menu_my_games ->
+            {
+                binding.txtHeader.text = getString(R.string.my_games)
+                binding.imgSearch.visibility = View.VISIBLE
+                binding.viewPager.currentItem = 1
+                myGamesViewModel.loadGames()
+            }
+
+            R.id.menu_info ->
+            {
+                binding.txtHeader.text = getString(R.string.info)
+                binding.imgSearch.visibility = View.GONE
+                binding.viewPager.currentItem = 2
+            }
         }
     }
 
