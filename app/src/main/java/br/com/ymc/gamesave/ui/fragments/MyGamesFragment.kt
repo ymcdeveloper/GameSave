@@ -27,7 +27,7 @@ class MyGamesFragment : Fragment()
 
     private val viewModel : MyGamesViewModel by activityViewModels()
 
-    var listener: ((clicked : Boolean) -> Unit)? = null
+    var listenerAddGames: ((clicked : Boolean) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
@@ -45,7 +45,7 @@ class MyGamesFragment : Fragment()
         viewModel.loadGames()
 
         binding.fabAdd.setOnClickListener {
-            listener?.invoke(true)
+            listenerAddGames?.invoke(true)
         }
     }
 
@@ -69,8 +69,8 @@ class MyGamesFragment : Fragment()
                                 putExtra(Const.EXTRA_GAME_ID, gameId)
                             }
 
-                            //                        startActivity(intent)
                             startForResult.launch(intent)
+//                            startActivity(intent)
                         }
                     }
                 }

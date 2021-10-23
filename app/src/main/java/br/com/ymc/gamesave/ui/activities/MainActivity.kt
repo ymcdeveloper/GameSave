@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
 
         setupBottomNavigation()
 
-        myGamesFragment.listener = {
+        myGamesFragment.listenerAddGames = {
             replaceFragment(allGamesFragment)
             binding.bottomNavigation.menu.getItem(0).isChecked = true
         }
