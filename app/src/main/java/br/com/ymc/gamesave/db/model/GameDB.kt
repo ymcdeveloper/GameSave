@@ -12,7 +12,9 @@ data class GameDB(
     val name: String,
     val cover_id : String?,
     val date : String,
-    val summary : String = ""
+    val summary : String = "",
+    val releaseDate : Long?,
+    val rating : Float?
 )
 
 fun GameDB.toGame() : Game
@@ -23,6 +25,7 @@ fun GameDB.toGame() : Game
         date = this.date,
         summary = this.summary,
         cover = this.cover_id?.let { Cover(0, it) },
-        total_rating = 0f
+        totalRating = this.rating,
+        releaseDate = this.releaseDate
     )
 }

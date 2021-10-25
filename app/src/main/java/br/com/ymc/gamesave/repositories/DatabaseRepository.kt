@@ -16,18 +16,21 @@ class DatabaseRepository @Inject constructor(private val gameDao: GameDAO)
         gameDao.insertGame(game.toGameDB())
     }
 
-    suspend fun selectGame(id: Int, arrGames : MutableLiveData<Game>)
+    suspend fun selectGame(id: Int, arrGames: MutableLiveData<Game>)
     {
-        arrGames.postValue(gameDao.selectGameById(id).toGame())
+        gameDao.selectGameById(id)?.let {
+            arrGames.postValue(it.toGame())
+        }
+
     }
 
-    suspend  fun selectMyGames(arrGames : MutableLiveData<List<Game>>)
+    suspend fun selectMyGames(arrGames: MutableLiveData<List<Game>>)
     {
-        val arrGamesReturn : MutableList<Game> = mutableListOf()
+        val arrGamesReturn: MutableList<Game> = mutableListOf()
 
         val arrGamesDB = gameDao.selectSavedGames()
 
-        for(game in arrGamesDB)
+        for (game in arrGamesDB)
         {
             arrGamesReturn.add(game.toGame())
         }
@@ -35,12 +38,12 @@ class DatabaseRepository @Inject constructor(private val gameDao: GameDAO)
         arrGames.postValue(arrGamesReturn)
     }
 
-    suspend fun checkGameExist(id: Int) : Boolean
+    suspend fun checkGameExist(id: Int): Boolean
     {
         return gameDao.gameExists(id)
     }
 
-    suspend fun deleteGame(game : Game)
+    suspend fun deleteGame(game: Game)
     {
         gameDao.deleteGame(game.toGameDB())
     }

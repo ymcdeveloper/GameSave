@@ -47,18 +47,35 @@
                         android:id="@+id/txtName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hitman"
+                        android:text=""
                         android:textSize="28sp"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/montserrat_light"/>
+                        android:fontFamily="@font/montserrat_bold"/>
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Hitman"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:fontFamily="@font/montserrat_bold"/>-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Release date: "
+                            android:textSize="14sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_light"/>
+
+                        <TextView
+                            android:id="@+id/txtReleaseDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="14sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_thin"/>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
@@ -83,7 +100,8 @@
                 android:src="@drawable/ic_add"
                 app:fabSize="normal"
                 android:layout_marginTop="210dp"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginRight="20dp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -121,7 +139,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/quicksand_light"
-                android:text="test"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="18sp" />
 

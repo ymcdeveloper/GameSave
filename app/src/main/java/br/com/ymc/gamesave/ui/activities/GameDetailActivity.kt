@@ -16,10 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityGameDetailBinding
 import br.com.ymc.gamesave.model.toGameDB
-import br.com.ymc.gamesave.util.Const
-import br.com.ymc.gamesave.util.Utility
-import br.com.ymc.gamesave.util.createImageURL
-import br.com.ymc.gamesave.util.valueToRating
+import br.com.ymc.gamesave.util.*
 import br.com.ymc.gamesave.viewModels.GameDetailViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -79,7 +76,9 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
         viewModel.game.observe(this, { game ->
             binding.txtName.text = game.name
             binding.txtSummary.text = game.summary
-            binding.ratingBar.rating = game.total_rating?.valueToRating() ?: 0f
+            binding.ratingBar.rating = game.totalRating?.valueToRating() ?: 0f
+            binding.txtReleaseDate.text = game.releaseDate?.toDate()
+            binding.fabAdd.visibility = View.VISIBLE
 
             if(game.cover != null)
             {

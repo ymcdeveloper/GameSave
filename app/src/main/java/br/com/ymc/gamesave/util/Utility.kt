@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utility
 {
@@ -49,4 +51,11 @@ fun String.createImageURL(imageId: String): String
 fun Float.valueToRating(): Float
 {
     return (this / 10) / 2
+}
+
+fun Long.toDate() : String
+{
+    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale("pt", "BR"))
+    val date = Date(this * 1000)
+    return sdf.format(date)
 }

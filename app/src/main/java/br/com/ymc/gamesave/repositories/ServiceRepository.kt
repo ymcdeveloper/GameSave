@@ -13,7 +13,7 @@ class ServiceRepository @Inject constructor(private val restApi: RestApi)
     {
         try
         {
-            val response = restApi.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where total_rating > 60 & cover != null & category = 0; sort total_rating desc;")
+            val response = restApi.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where rating_count > 500 & total_rating > 60 & cover != null & category = 0 & summary != null; sort total_rating desc;")
 
             if(response.isSuccessful)
             {
@@ -32,7 +32,7 @@ class ServiceRepository @Inject constructor(private val restApi: RestApi)
 
     suspend fun getGameById(id : Int, game : MutableLiveData<Game>)
     {
-        val response = restApi.getGameById(Const.TOKEN, Const.CLIENT_ID, "cover.image_id, name, summary, total_rating, platforms.abbreviation; where id = $id;")
+        val response = restApi.getGameById(Const.TOKEN, Const.CLIENT_ID, "cover.image_id, name, summary, total_rating, first_release_date, platforms.abbreviation; where id = $id;")
 
         if(response.isSuccessful)
         {

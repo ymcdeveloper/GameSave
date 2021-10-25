@@ -1,24 +1,17 @@
 package br.com.ymc.gamesave.ui.activities.fragments
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.ymc.gamesave.adapter.AllGamesAdapter
 import br.com.ymc.gamesave.databinding.FragmentAllGamesBinding
 import br.com.ymc.gamesave.ui.activities.GameDetailActivity
-import br.com.ymc.gamesave.ui.activities.MainActivity
 import br.com.ymc.gamesave.util.Const
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
 import dagger.hilt.android.AndroidEntryPoint
