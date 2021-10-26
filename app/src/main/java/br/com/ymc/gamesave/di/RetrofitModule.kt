@@ -1,6 +1,8 @@
 package br.com.ymc.gamesave.di
 
+import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.network.RestApi
+import br.com.ymc.gamesave.repositories.GameRepositoryImpl
 import br.com.ymc.gamesave.util.Const
 import dagger.Module
 import dagger.Provides
@@ -29,5 +31,12 @@ object RetrofitModule
             .baseUrl(Const.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGameRepository(api: RestApi): GameRepository
+    {
+        return GameRepositoryImpl(api)
     }
 }

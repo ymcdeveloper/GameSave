@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GameDetailViewModel @Inject constructor(private val repository: ServiceRepository, private val dbRepository: DatabaseRepository) : ViewModel()
+class GameDetailViewModel @Inject constructor(private val dbRepository: DatabaseRepository) : ViewModel()
 {
     private val _game : MutableLiveData<Game> = MutableLiveData()
     val game : LiveData<Game> = _game
@@ -29,7 +29,7 @@ class GameDetailViewModel @Inject constructor(private val repository: ServiceRep
         if(gameId != -1)
         {
             viewModelScope.launch {
-                repository.getGameById(gameId, _game)
+//                repository.getGameById(gameId, _game)
             }
         }
     }

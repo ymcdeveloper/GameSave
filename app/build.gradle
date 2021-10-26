@@ -55,8 +55,10 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.3.1"
     implementation 'androidx.fragment:fragment-ktx:1.3.6'
 
+    //Coroutine Lifecycle Scopes
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 
     //Room
     def roomVersion = '2.3.0'
@@ -92,4 +94,9 @@ dependencies {
 
     //Shape of view (custom shape to any android view)
     implementation 'io.github.florent37:shapeofview:1.4.7'
+
+    //Coroutines
+    def coroutinesVersion = '1.5.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 }

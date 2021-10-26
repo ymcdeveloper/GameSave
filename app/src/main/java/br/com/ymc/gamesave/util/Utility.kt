@@ -59,3 +59,12 @@ fun Long.toDate() : String
     val date = Date(this * 1000)
     return sdf.format(date)
 }
+
+fun Int.handleError() : String
+{
+    return when(this)
+    {
+        400 -> "Error $this Bad request"
+        else -> "Unknown error"
+    }
+}
