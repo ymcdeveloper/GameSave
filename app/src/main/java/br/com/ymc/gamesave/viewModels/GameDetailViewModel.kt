@@ -12,6 +12,7 @@ import br.com.ymc.gamesave.domain.use_case.db_use_case.SaveGameUseCase
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.model.toGameDB
 import br.com.ymc.gamesave.util.Resource
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -24,23 +25,41 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
                                               private val saveGameUseCase: SaveGameUseCase,
                                               private val checkGameExistsUseCase: CheckGameExistsUseCase) : ViewModel()
 {
-    private val _gameState : MutableLiveData<Resource<Game>> = MutableLiveData()
-    val game : LiveData<Resource<Game>> = _gameState
+    //LiveData values
+    private val _game : MutableLiveData<Game> = MutableLiveData()
+    val game : LiveData<Game> = _game
 
     private val _isGameAdded : MutableLiveData<Boolean> = MutableLiveData(false)
     val isGameAdded : LiveData<Boolean> = _isGameAdded
 
-    var gameDeleted : Boolean = false
+    private val _state : MutableLiveData<UIState> = MutableLiveData()
+    var state : LiveData<UIState> = _state
 
-    var id = -1
+    //Variables
+    var gameDeleted : Boolean = false
+    private var id = -1
 
     fun getGame(gameId : Int)
     {
         if(gameId != -1)
         {
             viewModelScope.launch {
-                getGameDetailUseCase(gameId).collect {
-                    _gameState.value = it
+                getGameDetailUseCase(gameId).collect { result ->
+                    when(result)
+                    {
+                        is Resource.Success -> {
+                            _game.postValue(result.data)
+                            _state.postValue(UIState.Success)
+                        }
+
+                        is Resource.Error -> {
+                            _state.postValue(UIState.Error(result.message ?: "Unknown Error"))
+                        }
+
+                        is Resource.Loading -> {
+                            _state.postValue(UIState.Loading)
+                        }
+                    }
                 }
             }
         }
@@ -51,8 +70,21 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
         if(gameId != -1)
         {
             viewModelScope.launch {
-                getDBGameDetailUseCase(gameId).collect {
-                    _gameState.value = it
+                getDBGameDetailUseCase(gameId).collect { result ->
+                    when(result)
+                    {
+                        is Resource.Success -> {
+                            _game.postValue(result.data)
+                        }
+
+                        is Resource.Error -> {
+                            _state.postValue(UIState.Error(result.message ?: "Unknown Error"))
+                        }
+
+                        is Resource.Loading -> {
+                            _state.postValue(UIState.Loading)
+                        }
+                    }
                 }
             }
         }
@@ -61,7 +93,7 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
     fun insertGameToDB()
     {
         viewModelScope.launch {
-            game.value?.data?.let { saveGameUseCase(it.toGameDB()) }
+            game.value?.let { saveGameUseCase(it.toGameDB()) }
         }
     }
 
@@ -75,7 +107,7 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
     fun deleteGame()
     {
         viewModelScope.launch {
-            game.value?.data?.let {
+            game.value?.let {
                 deleteGameUseCase(it.toGameDB())
             }
         }

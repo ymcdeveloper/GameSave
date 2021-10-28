@@ -21,15 +21,19 @@ import br.com.ymc.gamesave.ui.activities.GameDetailActivity
 import br.com.ymc.gamesave.util.Const
 import br.com.ymc.gamesave.util.Resource
 import br.com.ymc.gamesave.viewModels.MyGamesViewModel
+import br.com.ymc.gamesave.viewModels.UIState
+import com.google.android.material.snackbar.Snackbar
 
 class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 {
     private var _binding: FragmentMyGamesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel : MyGamesViewModel by activityViewModels()
+    private val viewModel: MyGamesViewModel by activityViewModels()
 
-    var listenerAddGames: ((clicked : Boolean) -> Unit)? = null
+    var listenerAddGames: ((clicked: Boolean) -> Unit)? = null
+
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
@@ -53,12 +57,12 @@ class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         binding.swipeRefreshLayout.setOnRefreshListener(this)
     }
 
-    private fun setupList(games : List<Game>)
+    private fun setupList(games: List<Game>)
     {
         binding.rcvMyGames.apply {
 
             binding.swipeRefreshLayout.isRefreshing = false
-            if(games.isNotEmpty())
+            if (games.isNotEmpty())
             {
                 binding.rcvMyGames.visibility = View.VISIBLE
                 binding.lnlWarning.visibility = View.GONE
@@ -87,22 +91,36 @@ class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
     private fun setupObservers()
     {
-        viewModel.arrGames.observe(viewLifecycleOwner, { result ->
-            when(result)
+        viewModel.arrGames.observe(viewLifecycleOwner) { result ->
+            setupList(result)
+        }
+
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state)
             {
-                is Resource.Success -> {
-                    result.data?.let { setupList(it) }
+                is UIState.Success ->
+                {
+                    snackbar?.dismiss()
                 }
 
-                is Resource.Error -> {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                is UIState.Error ->
+                {
+                    binding.root.let {
+                        snackbar?.dismiss()
+                        binding.swipeRefreshLayout.isRefreshing = false
+                        Snackbar.make(it, state.message, Snackbar.LENGTH_LONG).show()
+                    }
                 }
 
-                is Resource.Loading -> {
-
+                is UIState.Loading ->
+                {
+                    binding.root.let {
+                        snackbar = Snackbar.make(it, "Loading...", Snackbar.LENGTH_INDEFINITE)
+                        snackbar!!.show()
+                    }
                 }
             }
-        })
+        }
     }
 
     override fun onRefresh()
@@ -112,7 +130,7 @@ class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        if(requestCode == Const.REQUEST_DETAIL_ACTIVITY && resultCode == Activity.RESULT_OK)
+        if (requestCode == Const.REQUEST_DETAIL_ACTIVITY && resultCode == Activity.RESULT_OK)
         {
             viewModel.loadGames()
         }

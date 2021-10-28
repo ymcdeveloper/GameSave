@@ -20,6 +20,7 @@ import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.model.toGameDB
 import br.com.ymc.gamesave.util.*
 import br.com.ymc.gamesave.viewModels.GameDetailViewModel
+import br.com.ymc.gamesave.viewModels.UIState
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -32,6 +33,8 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
     var gameId : Int? = null
 
     private val viewModel : GameDetailViewModel by viewModels()
+
+    private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -62,32 +65,38 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
     {
         //Check if game is already added
         viewModel.isGameAdded.observe(this, {
-            if(it)
-            {
-                binding.fabAdd.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.red, null))
-                binding.fabAdd.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_delete))
-            }
-            else
-            {
-                binding.fabAdd.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorSecondary, null))
-                binding.fabAdd.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add))
-            }
+            setupFAB(it)
         })
 
-        viewModel.game.observe(this, { result ->
-            when(result)
-            {
-                is Resource.Success -> {
-                    result.data?.let { setupUI(it) }
-                }
-
-                is Resource.Error ->{
-                    Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
-                }
-
-                else -> Unit
-            }
+        viewModel.game.observe(this, { game ->
+            setupUI(game)
         })
+
+        viewModel.state.observe(this) { state ->
+            when (state)
+            {
+                is UIState.Success ->
+                {
+                    snackbar?.dismiss()
+                }
+
+                is UIState.Error ->
+                {
+                    binding.root.let {
+                        snackbar?.dismiss()
+                        Snackbar.make(it, state.message, Snackbar.LENGTH_LONG).show()
+                    }
+                }
+
+                is UIState.Loading ->
+                {
+                    binding.root.let {
+                        snackbar = Snackbar.make(it, "Loading...", Snackbar.LENGTH_INDEFINITE)
+                        snackbar!!.show()
+                    }
+                }
+            }
+        }
     }
 
     private fun setupUI(game : Game)
@@ -112,6 +121,20 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
         }
 
         viewModel.checkGameAdded(game.id)
+    }
+
+    fun setupFAB(isAdded : Boolean)
+    {
+        if(isAdded)
+        {
+            binding.fabAdd.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.red, null))
+            binding.fabAdd.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_delete))
+        }
+        else
+        {
+            binding.fabAdd.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorSecondary, null))
+            binding.fabAdd.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add))
+        }
     }
 
     private fun setupViewSettings()

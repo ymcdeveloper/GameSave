@@ -14,8 +14,8 @@ import br.com.ymc.gamesave.databinding.FragmentAllGamesBinding
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.ui.activities.GameDetailActivity
 import br.com.ymc.gamesave.util.Const
-import br.com.ymc.gamesave.util.Resource
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
+import br.com.ymc.gamesave.viewModels.UIState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +45,7 @@ class AllGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         viewModel.callGamesApi()
     }
 
-    private fun setupGameList(games : List<Game>?)
+    private fun setupGameList(games: List<Game>?)
     {
         binding.rcvGames.apply {
             snackbar?.dismiss()
@@ -69,31 +69,93 @@ class AllGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     private fun setObservers()
     {
         viewModel.arrGames.observe(viewLifecycleOwner) { result ->
-            when(result)
-            {
-                is Resource.Success -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    setupGameList(result.data)
-                }
+            setupGameList(result)
+        }
 
-                is Resource.Error -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state)
+            {
+                is UIState.Error ->
+                {
                     binding.root.let {
                         snackbar?.dismiss()
-                        Snackbar.make(it, result.message ?: "Unknown Error", Snackbar.LENGTH_LONG).show()
+                        binding.swipeRefreshLayout.isRefreshing = false
+                        Snackbar.make(it, state.message, Snackbar.LENGTH_LONG).show()
                     }
                 }
 
-                is Resource.Loading -> {
+                is UIState.Loading ->
+                {
                     binding.swipeRefreshLayout.isRefreshing = true
                     binding.root.let {
                         snackbar = Snackbar.make(it, "Loading...", Snackbar.LENGTH_INDEFINITE)
                         snackbar!!.show()
                     }
                 }
+
+                is UIState.Success ->
+                {
+                    snackbar?.dismiss()
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
             }
         }
+
+        //        viewModel.isLoading.observe(viewLifecycleOwner) {
+        //                    if(it)
+        //                    {
+        //                        binding.swipeRefreshLayout.isRefreshing = true
+        //                        binding.root.let {
+        //                            snackbar = Snackbar.make(it, "Loading...", Snackbar.LENGTH_INDEFINITE)
+        //                            snackbar!!.show()
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        binding.swipeRefreshLayout.isRefreshing = false
+        //                        snackbar?.dismiss()
+        //                    }
+        //        }
+        //
+        //        viewModel.error.observe(viewLifecycleOwner) { error ->
+        //            if(error.first)
+        //            {
+        //                binding.root.let {
+        //                    snackbar?.dismiss()
+        //                    Snackbar.make(it, error.second, Snackbar.LENGTH_LONG).show()
+        //                }
+        //            }
+        //        }
     }
+
+    //    private fun setObservers()
+    //    {
+    //        viewModel.arrGames.observe(viewLifecycleOwner) { result ->
+    //            when(result)
+    //            {
+    //                is Resource.Success -> {
+    //                    binding.swipeRefreshLayout.isRefreshing = false
+    //                    setupGameList(result.data)
+    //                }
+    //
+    //                is Resource.Error -> {
+    //                    binding.swipeRefreshLayout.isRefreshing = false
+    //                    binding.root.let {
+    //                        snackbar?.dismiss()
+    //                        Snackbar.make(it, result.message ?: "Unknown Error", Snackbar.LENGTH_LONG).show()
+    //                    }
+    //                }
+    //
+    //                is Resource.Loading -> {
+    //                    binding.swipeRefreshLayout.isRefreshing = true
+    //                    binding.root.let {
+    //                        snackbar = Snackbar.make(it, "Loading...", Snackbar.LENGTH_INDEFINITE)
+    //                        snackbar!!.show()
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
     override fun onDestroyView()
     {
