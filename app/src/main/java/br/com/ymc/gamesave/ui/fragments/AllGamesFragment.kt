@@ -7,25 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.adapter.AllGamesAdapter
 import br.com.ymc.gamesave.databinding.FragmentAllGamesBinding
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.ui.activities.GameDetailActivity
 import br.com.ymc.gamesave.util.Const
+import br.com.ymc.gamesave.util.Resource
 import br.com.ymc.gamesave.viewModels.AllGamesViewModel
-import br.com.ymc.gamesave.viewModels.GamesListState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowWith
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AllGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
@@ -50,79 +42,57 @@ class AllGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         setObservers()
 
         binding.swipeRefreshLayout.setOnRefreshListener(this)
+        viewModel.callGamesApi()
     }
 
-    fun setObservers()
-    { //        //List of games observer
-        //        viewModel.arrGames.observe(viewLifecycleOwner, { arrGames ->
-        //            binding.rcvGames.apply {
-        //                binding.swipeRefreshLayout.isRefreshing = false
-        //
-        //                val adapterAux = AllGamesAdapter(arrGames)
-        //                layoutManager = GridLayoutManager(context, 2)
-        //                adapter = adapterAux
-        //
-        //                adapterAux.itemClick = { gameId ->
-        //                    activity?.let {
-        //                        val intent = Intent(context, GameDetailActivity::class.java).apply {
-        //                            putExtra(Const.EXTRA_GAME_ID, gameId)
-        //                        }
-        //
-        //                        startActivity(intent)
-        //                    }
-        //                }
-        //            }
-        //        })
+    private fun setupGameList(games : List<Game>?)
+    {
+        binding.rcvGames.apply {
+            snackbar?.dismiss()
 
-        viewModel.arrGames.onEach { state ->
-            when (state)
+            val adapterAux = AllGamesAdapter(games)
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = adapterAux
+
+            adapterAux.itemClick = { gameId ->
+                activity?.let {
+                    val intent = Intent(context, GameDetailActivity::class.java).apply {
+                        putExtra(Const.EXTRA_GAME_ID, gameId)
+                    }
+
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    private fun setObservers()
+    {
+        viewModel.arrGames.observe(viewLifecycleOwner) { result ->
+            when(result)
             {
-                is GamesListState.Success ->
-                {
-                    binding.rcvGames.apply {
-                        binding.swipeRefreshLayout.isRefreshing = false
+                is Resource.Success -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    setupGameList(result.data)
+                }
+
+                is Resource.Error -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    binding.root.let {
                         snackbar?.dismiss()
-
-                        val adapterAux = AllGamesAdapter(state.arrGames)
-                        layoutManager = GridLayoutManager(context, 2)
-                        adapter = adapterAux
-
-                        adapterAux.itemClick = { gameId ->
-                            activity?.let {
-                                val intent = Intent(context, GameDetailActivity::class.java).apply {
-                                    putExtra(Const.EXTRA_GAME_ID, gameId)
-                                }
-
-                                startActivity(intent)
-                            }
-                        }
+                        Snackbar.make(it, result.message ?: "Unknown Error", Snackbar.LENGTH_LONG).show()
                     }
                 }
 
-                is GamesListState.IsLoading ->
-                {
+                is Resource.Loading -> {
+                    binding.swipeRefreshLayout.isRefreshing = true
                     binding.root.let {
-                        snackbar = Snackbar.make(binding.root, "Loading...", Snackbar.LENGTH_INDEFINITE)
+                        snackbar = Snackbar.make(it, "Loading...", Snackbar.LENGTH_INDEFINITE)
                         snackbar!!.show()
                     }
                 }
-
-                is GamesListState.Error ->
-                {
-                    binding.root.let {
-                        snackbar?.dismiss()
-                        Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
-                    }
-                }
-                else -> Unit
             }
-        }.launchIn(lifecycleScope)
-    }
-
-    override fun onStart()
-    {
-        super.onStart()
-        viewModel.callGamesApi()
+        }
     }
 
     override fun onDestroyView()

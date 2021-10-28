@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import br.com.ymc.gamesave.R
 import br.com.ymc.gamesave.databinding.ActivityGameDetailBinding
+import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.model.toGameDB
 import br.com.ymc.gamesave.util.*
 import br.com.ymc.gamesave.viewModels.GameDetailViewModel
@@ -56,7 +58,7 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
         setObservers()
     }
 
-    fun setObservers()
+    private fun setObservers()
     {
         //Check if game is already added
         viewModel.isGameAdded.observe(this, {
@@ -72,32 +74,47 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
             }
         })
 
-        //Observe game called from api
-        viewModel.game.observe(this, { game ->
-            binding.txtName.text = game.name
-            binding.txtSummary.text = game.summary
-            binding.ratingBar.rating = game.totalRating?.valueToRating() ?: 0f
-            binding.txtReleaseDate.text = game.releaseDate?.toDate()
-            binding.fabAdd.visibility = View.VISIBLE
-
-            if(game.cover != null)
+        viewModel.game.observe(this, { result ->
+            when(result)
             {
-                Glide.with(this)
-                    .load(Const.URL_IMAGE_THUMB.createImageURL(game.cover.image_id))
-                    .into(binding.imgCover)
-            }
-            else
-            {
-                Glide.with(this)
-                    .load(R.drawable.ic_no_image)
-                    .into(binding.imgCover)
-            }
+                is Resource.Success -> {
+                    result.data?.let { setupUI(it) }
+                }
 
-            viewModel.checkGameAdded(game.id)
+                is Resource.Error ->{
+                    Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> Unit
+            }
         })
     }
 
-    fun setupViewSettings()
+    private fun setupUI(game : Game)
+    {
+        binding.txtName.text = game.name
+        binding.txtSummary.text = game.summary
+        binding.ratingBar.rating = game.totalRating?.valueToRating() ?: 0f
+        binding.txtReleaseDate.text = game.releaseDate?.toDate()
+        binding.fabAdd.visibility = View.VISIBLE
+
+        if(game.cover != null)
+        {
+            Glide.with(this)
+                .load(Const.URL_IMAGE_THUMB.createImageURL(game.cover.image_id))
+                .into(binding.imgCover)
+        }
+        else
+        {
+            Glide.with(this)
+                .load(R.drawable.ic_no_image)
+                .into(binding.imgCover)
+        }
+
+        viewModel.checkGameAdded(game.id)
+    }
+
+    private fun setupViewSettings()
     {
         binding.fabAdd.setOnClickListener(this)
         binding.imgBack.setOnClickListener(this)

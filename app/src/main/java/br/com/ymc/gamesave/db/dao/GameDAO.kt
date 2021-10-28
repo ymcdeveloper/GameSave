@@ -15,7 +15,7 @@ interface GameDAO
     suspend fun selectSavedGames() : List<GameDB>
 
     @Query("SELECT * FROM GAME WHERE id = :id")
-    suspend fun selectGameById(id : Int) : GameDB?
+    suspend fun selectGameById(id : Int) : GameDB
 
     @Query("SELECT EXISTS(SELECT * FROM GAME WHERE id = :id)")
     suspend fun gameExists(id : Int) : Boolean

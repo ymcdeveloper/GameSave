@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
@@ -15,8 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.ymc.gamesave.adapter.AllGamesAdapter
 import br.com.ymc.gamesave.databinding.FragmentMyGamesBinding
+import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.ui.activities.GameDetailActivity
 import br.com.ymc.gamesave.util.Const
+import br.com.ymc.gamesave.util.Resource
 import br.com.ymc.gamesave.viewModels.MyGamesViewModel
 
 class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
@@ -50,35 +53,53 @@ class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         binding.swipeRefreshLayout.setOnRefreshListener(this)
     }
 
-    private fun setupObservers()
+    private fun setupList(games : List<Game>)
     {
-        viewModel.arrGames.observe(viewLifecycleOwner, { arrGames ->
-            binding.rcvMyGames.apply {
+        binding.rcvMyGames.apply {
 
-                binding.swipeRefreshLayout.isRefreshing = false
-                if(arrGames.isNotEmpty())
-                {
-                    binding.rcvMyGames.visibility = View.VISIBLE
-                    binding.lnlWarning.visibility = View.GONE
+            binding.swipeRefreshLayout.isRefreshing = false
+            if(games.isNotEmpty())
+            {
+                binding.rcvMyGames.visibility = View.VISIBLE
+                binding.lnlWarning.visibility = View.GONE
 
-                    val adapterAux = AllGamesAdapter(arrGames)
-                    layoutManager = GridLayoutManager(context, 2)
-                    adapter = adapterAux
+                val adapterAux = AllGamesAdapter(games)
+                layoutManager = GridLayoutManager(context, 2)
+                adapter = adapterAux
 
-                    adapterAux.itemClick = { gameId ->
-                        activity?.let {
-                            val intent = Intent(context, GameDetailActivity::class.java).apply {
-                                putExtra(Const.EXTRA_GAME_ID, gameId)
-                            }
-
-                            startActivityForResult(intent, Const.REQUEST_DETAIL_ACTIVITY)
+                adapterAux.itemClick = { gameId ->
+                    activity?.let {
+                        val intent = Intent(context, GameDetailActivity::class.java).apply {
+                            putExtra(Const.EXTRA_GAME_ID, gameId)
                         }
+
+                        startActivityForResult(intent, Const.REQUEST_DETAIL_ACTIVITY)
                     }
                 }
-                else
-                {
-                    binding.rcvMyGames.visibility = View.GONE
-                    binding.lnlWarning.visibility = View.VISIBLE
+            }
+            else
+            {
+                binding.rcvMyGames.visibility = View.GONE
+                binding.lnlWarning.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun setupObservers()
+    {
+        viewModel.arrGames.observe(viewLifecycleOwner, { result ->
+            when(result)
+            {
+                is Resource.Success -> {
+                    result.data?.let { setupList(it) }
+                }
+
+                is Resource.Error -> {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                }
+
+                is Resource.Loading -> {
+
                 }
             }
         })

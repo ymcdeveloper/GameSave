@@ -4,18 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.ymc.gamesave.domain.use_case.api_use_Case.GetGameDetailUseCase
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.repositories.DatabaseRepository
-import br.com.ymc.gamesave.repositories.ServiceRepository
+import br.com.ymc.gamesave.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GameDetailViewModel @Inject constructor(private val dbRepository: DatabaseRepository) : ViewModel()
+class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: GetGameDetailUseCase, private val dbRepository: DatabaseRepository) : ViewModel()
 {
-    private val _game : MutableLiveData<Game> = MutableLiveData()
-    val game : LiveData<Game> = _game
+    private val _gameState : MutableLiveData<Resource<Game>> = MutableLiveData()
+    val game : LiveData<Resource<Game>> = _gameState
 
     private val _isGameAdded : MutableLiveData<Boolean> = MutableLiveData(false)
     val isGameAdded : LiveData<Boolean> = _isGameAdded
@@ -29,7 +31,9 @@ class GameDetailViewModel @Inject constructor(private val dbRepository: Database
         if(gameId != -1)
         {
             viewModelScope.launch {
-//                repository.getGameById(gameId, _game)
+                getGameDetailUseCase(gameId).collect {
+                    _gameState.value = it
+                }
             }
         }
     }
@@ -39,7 +43,9 @@ class GameDetailViewModel @Inject constructor(private val dbRepository: Database
         if(gameId != -1)
         {
             viewModelScope.launch {
-                dbRepository.selectGame(gameId, _game)
+                dbRepository.selectGame(gameId).collect {
+                    _gameState.value = it
+                }
             }
         }
     }
@@ -47,7 +53,11 @@ class GameDetailViewModel @Inject constructor(private val dbRepository: Database
     fun insertGameToDB()
     {
         viewModelScope.launch {
-            game.value?.let { dbRepository.addGame(it) }
+            game.value?.let { resourceData ->
+                resourceData.data?.let { game ->
+                    dbRepository.addGame(game)
+                }
+            }
         }
     }
 
@@ -62,8 +72,16 @@ class GameDetailViewModel @Inject constructor(private val dbRepository: Database
     {
         viewModelScope.launch {
             game.value?.let {
-                dbRepository.deleteGame(it)
+//                dbRepository.deleteGame(it)
             }
         }
     }
+}
+
+sealed class GameDetailState
+{
+    object Init : GameDetailState()
+    data class IsLoading(val isLoading: Boolean) : GameDetailState()
+    data class Success(val arrGames: Game) : GameDetailState()
+    data class Error(val message: String) : GameDetailState()
 }

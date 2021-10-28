@@ -1,5 +1,6 @@
-package br.com.ymc.gamesave.domain.use_case
+package br.com.ymc.gamesave.domain.use_case.api_use_Case
 
+import androidx.lifecycle.LiveData
 import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.util.Resource
@@ -10,10 +11,10 @@ import java.io.IOException
 
 import javax.inject.Inject
 
-class SearchGameUseCase @Inject constructor(private val repository: GameRepository)
+class GetGamesUseCase @Inject constructor(private val repository: GameRepository)
 {
-    suspend operator fun invoke(searchQuery : String) : Flow<Resource<List<Game>>>
+    suspend operator fun invoke() : Flow<Resource<List<Game>>>
     {
-        return repository.searchGame(searchQuery)
+        return repository.getGames()
     }
 }

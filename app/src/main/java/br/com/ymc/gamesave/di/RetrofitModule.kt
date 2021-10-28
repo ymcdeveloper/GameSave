@@ -34,7 +34,6 @@ object RetrofitModule
     }
 
     @Provides
-    @Singleton
     fun provideGameRepository(api: RestApi): GameRepository
     {
         return GameRepositoryImpl(api)
