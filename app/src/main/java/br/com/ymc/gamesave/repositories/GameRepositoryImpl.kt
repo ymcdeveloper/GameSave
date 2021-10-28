@@ -1,5 +1,6 @@
 package br.com.ymc.gamesave.repositories
 
+import android.accounts.NetworkErrorException
 import androidx.lifecycle.LiveData
 import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.model.Game
@@ -11,6 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(private val api : RestApi) : GameRepository
@@ -22,7 +25,7 @@ class GameRepositoryImpl @Inject constructor(private val api : RestApi) : GameRe
             {
                 emit(Resource.Loading())
 
-                val response = api.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where rating_count > 500 & total_rating > 60 & cover != null & category = 0 & summary != null; sort total_rating desc;")
+                val response = api.getGames(Const.TOKEN, Const.CLIENT_ID, "name, cover.image_id; limit 500; where rating_count > 200 & total_rating > 60 & cover != null & category = 0 & summary != null; sort total_rating desc;")
 
                 if(response.isSuccessful)
                 {
@@ -33,13 +36,9 @@ class GameRepositoryImpl @Inject constructor(private val api : RestApi) : GameRe
                     emit(Resource.Error(response.code().handleError()))
                 }
             }
-            catch (e: HttpException)
+            catch (e: Exception)
             {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
-            }
-            catch (e: IOException)
-            {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
+                emit(Resource.Error(e.handleError()))
             }
         }
     }
@@ -62,13 +61,9 @@ class GameRepositoryImpl @Inject constructor(private val api : RestApi) : GameRe
                     emit(Resource.Error(response.code().handleError()))
                 }
             }
-            catch (e: HttpException)
+            catch (e: Exception)
             {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
-            }
-            catch (e: IOException)
-            {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
+                emit(Resource.Error(e.handleError()))
             }
         }
     }
@@ -91,13 +86,9 @@ class GameRepositoryImpl @Inject constructor(private val api : RestApi) : GameRe
                     emit(Resource.Error(response.code().handleError()))
                 }
             }
-            catch (e: HttpException)
+            catch (e: Exception)
             {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
-            }
-            catch (e: IOException)
-            {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
+                emit(Resource.Error(e.handleError()))
             }
         }
     }

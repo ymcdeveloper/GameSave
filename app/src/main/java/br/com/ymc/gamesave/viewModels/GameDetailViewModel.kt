@@ -4,17 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.ymc.gamesave.domain.use_case.api_use_Case.GetGameDetailUseCase
+import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGameDetailUseCase
+import br.com.ymc.gamesave.domain.use_case.db_use_case.CheckGameExistsUseCase
+import br.com.ymc.gamesave.domain.use_case.db_use_case.DeleteGameUseCase
+import br.com.ymc.gamesave.domain.use_case.db_use_case.GetDBGameDetailUseCase
+import br.com.ymc.gamesave.domain.use_case.db_use_case.SaveGameUseCase
 import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.repositories.DatabaseRepository
+import br.com.ymc.gamesave.model.toGameDB
 import br.com.ymc.gamesave.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: GetGameDetailUseCase, private val dbRepository: DatabaseRepository) : ViewModel()
+class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: GetGameDetailUseCase,
+                                              private val getDBGameDetailUseCase: GetDBGameDetailUseCase,
+                                              private val deleteGameUseCase: DeleteGameUseCase,
+                                              private val saveGameUseCase: SaveGameUseCase,
+                                              private val checkGameExistsUseCase: CheckGameExistsUseCase) : ViewModel()
 {
     private val _gameState : MutableLiveData<Resource<Game>> = MutableLiveData()
     val game : LiveData<Resource<Game>> = _gameState
@@ -43,7 +51,7 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
         if(gameId != -1)
         {
             viewModelScope.launch {
-                dbRepository.selectGame(gameId).collect {
+                getDBGameDetailUseCase(gameId).collect {
                     _gameState.value = it
                 }
             }
@@ -53,35 +61,23 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
     fun insertGameToDB()
     {
         viewModelScope.launch {
-            game.value?.let { resourceData ->
-                resourceData.data?.let { game ->
-                    dbRepository.addGame(game)
-                }
-            }
+            game.value?.data?.let { saveGameUseCase(it.toGameDB()) }
         }
     }
 
     fun checkGameAdded(gameId : Int)
     {
         viewModelScope.launch {
-            _isGameAdded.value = dbRepository.checkGameExist(gameId)
+            _isGameAdded.value = checkGameExistsUseCase(gameId)
         }
     }
 
     fun deleteGame()
     {
         viewModelScope.launch {
-            game.value?.let {
-//                dbRepository.deleteGame(it)
+            game.value?.data?.let {
+                deleteGameUseCase(it.toGameDB())
             }
         }
     }
-}
-
-sealed class GameDetailState
-{
-    object Init : GameDetailState()
-    data class IsLoading(val isLoading: Boolean) : GameDetailState()
-    data class Success(val arrGames: Game) : GameDetailState()
-    data class Error(val message: String) : GameDetailState()
 }

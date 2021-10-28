@@ -1,9 +1,12 @@
 package br.com.ymc.gamesave.util
 
+import android.accounts.NetworkErrorException
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import java.io.IOException
+import java.net.UnknownHostException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,6 +68,17 @@ fun Int.handleError() : String
     return when(this)
     {
         400 -> "Error $this Bad request"
+        else -> "Unknown error"
+    }
+}
+
+fun Exception.handleError() : String
+{
+    return when(this)
+    {
+        is UnknownHostException -> "No internet connection"
+        is NetworkErrorException -> "Internet connection error"
+        is IOException -> this.localizedMessage ?: "Unknown error"
         else -> "Unknown error"
     }
 }

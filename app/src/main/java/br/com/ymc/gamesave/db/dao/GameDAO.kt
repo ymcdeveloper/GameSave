@@ -1,9 +1,7 @@
 package br.com.ymc.gamesave.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.com.ymc.gamesave.db.model.GameDB
-import br.com.ymc.gamesave.model.Game
 
 @Dao
 interface GameDAO
@@ -22,4 +20,7 @@ interface GameDAO
 
     @Delete
     suspend fun deleteGame(gameDB: GameDB)
+
+    @Query("SELECT COUNT(id) FROM GAME")
+    suspend fun getCount(): Int
 }

@@ -1,8 +1,8 @@
 package br.com.ymc.gamesave.viewModels
 
 import androidx.lifecycle.*
-import br.com.ymc.gamesave.domain.use_case.api_use_Case.GetGamesUseCase
-import br.com.ymc.gamesave.domain.use_case.api_use_Case.SearchGameUseCase
+import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCase
+import br.com.ymc.gamesave.domain.use_case.api_use_case.SearchGameUseCase
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

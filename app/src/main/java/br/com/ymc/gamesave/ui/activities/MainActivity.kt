@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
         }
     }
 
-    fun onNavigationItemSelected(menuItem : MenuItem)
+    private fun onNavigationItemSelected(menuItem : MenuItem)
     {
         binding.searchView.visibility = View.GONE
         binding.lnlSearch.visibility = View.VISIBLE
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
                 binding.txtHeader.text = getString(R.string.my_games)
                 binding.imgSearch.visibility = View.VISIBLE
                 binding.viewPager.currentItem = 1
-                myGamesViewModel.loadGames()
+                myGamesViewModel.shouldReload()
             }
 
             R.id.menu_info ->

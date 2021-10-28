@@ -71,4 +71,9 @@ class DatabaseRepositoryImpl @Inject constructor(private val gameDAO: GameDAO) :
         }
     }
 
+    override suspend fun getCount(): Int
+    {
+        return gameDAO.getCount()
+    }
+
 }

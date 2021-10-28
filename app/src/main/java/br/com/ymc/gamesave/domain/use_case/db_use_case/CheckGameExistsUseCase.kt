@@ -5,8 +5,8 @@ import javax.inject.Inject
 
 class CheckGameExistsUseCase @Inject constructor(private val repository: DatabaseRepository)
 {
-    suspend operator fun invoke(id : Int)
+    suspend operator fun invoke(id : Int) : Boolean
     {
-        repository.checkGameExists(id)
+        return repository.checkGameExists(id)
     }
 }
