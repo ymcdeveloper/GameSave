@@ -1,7 +1,5 @@
 package br.com.ymc.gamesave.repositories
 
-import android.accounts.NetworkErrorException
-import androidx.lifecycle.LiveData
 import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.network.RestApi
@@ -13,10 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
-import retrofit2.HttpException
-import java.io.IOException
-import java.lang.Exception
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(private val api: RestApi) : GameRepository
