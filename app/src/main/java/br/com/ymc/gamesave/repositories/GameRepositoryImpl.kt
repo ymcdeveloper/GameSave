@@ -4,6 +4,7 @@ import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.network.RestApi
 import br.com.ymc.gamesave.util.Const
+import br.com.ymc.gamesave.util.EspressoIdlingResource
 import br.com.ymc.gamesave.util.Resource
 import br.com.ymc.gamesave.util.handleError
 import kotlinx.coroutines.delay
@@ -87,7 +88,8 @@ class GameRepositoryImpl @Inject constructor(private val api: RestApi) : GameRep
                 if (response.isSuccessful)
                 {
                     emit(Resource.Success(response.body() ?: emptyList()))
-                } else
+                }
+                else
                 {
                     emit(Resource.Error(response.code().handleError()))
                 }

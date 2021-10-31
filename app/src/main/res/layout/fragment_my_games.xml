@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
-    tools:context=".ui.activities.fragments.MyGamesFragment"
-    android:background="@color/black">
+    android:id="@+id/my_games_parent"
+    tools:context=".ui.activities.fragments.MyGamesFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -17,19 +18,18 @@
             android:id="@+id/rcvMyGames"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
 
     <LinearLayout
         android:id="@+id/lnlWarning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerInParent="true"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
@@ -41,25 +41,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No games yet"
-            android:textSize="30sp"
             android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/gray_transparent"/>
+            android:text="No games yet"
+            android:textColor="@color/gray_transparent"
+            android:textSize="30sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lets add some games!"
-            android:textSize="18sp"
             android:fontFamily="@font/montserrat_light"
-            android:textColor="@color/gray_transparent"/>
+            android:text="Lets add some games!"
+            android:textColor="@color/gray_transparent"
+            android:textSize="18sp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_add" />
 
     </LinearLayout>
 

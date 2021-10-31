@@ -1,14 +1,18 @@
 package br.com.ymc.gamesave.viewModels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCase
 import br.com.ymc.gamesave.domain.use_case.api_use_case.SearchGameUseCase
 import br.com.ymc.gamesave.model.Game
+import br.com.ymc.gamesave.util.EspressoIdlingResource
 import br.com.ymc.gamesave.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,16 +53,17 @@ class AllGamesViewModel @Inject constructor(private val getGamesUseCase: GetGame
 
     fun searchGame(query: String)
     {
+        EspressoIdlingResource.increment()
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
-
             searchGamesUseCase("'$query'").collect { result ->
                 when(result)
                 {
                     is Resource.Success -> {
                         _gamesList.value = result.data
                         _state.postValue(UIState.Success)
+                        EspressoIdlingResource.decrement()
                     }
                     is Resource.Error ->
                     {
