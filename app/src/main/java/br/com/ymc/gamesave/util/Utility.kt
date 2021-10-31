@@ -82,3 +82,14 @@ fun Exception.handleError() : String
         else -> "Unknown error"
     }
 }
+
+fun Throwable.handleError() : String
+{
+    return when(this)
+    {
+        is UnknownHostException -> "No internet connection"
+        is NetworkErrorException -> "Internet connection error"
+        is IOException -> this.localizedMessage ?: "Unknown error"
+        else -> "Unknown error"
+    }
+}
