@@ -35,6 +35,7 @@ class AllGamesViewModel @Inject constructor(private val getGamesUseCase: GetGame
                 when(result)
                 {
                     is Resource.Success -> {
+                        EspressoIdlingResource.decrement()
                         _gamesList.value = result.data
                         _state.postValue(UIState.Success)
                     }
@@ -44,8 +45,10 @@ class AllGamesViewModel @Inject constructor(private val getGamesUseCase: GetGame
                     }
                     is Resource.Loading ->
                     {
+                        EspressoIdlingResource.increment()
                         _state.postValue(UIState.Loading)
                     }
+                    else -> Unit
                 }
             }
         }

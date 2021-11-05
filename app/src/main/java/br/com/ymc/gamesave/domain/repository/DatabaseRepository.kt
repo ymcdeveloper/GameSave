@@ -11,7 +11,7 @@ interface DatabaseRepository
 
     suspend fun getGame(id : Int) : Flow<Resource<Game>>
 
-    suspend fun saveGameToLibrary(game : GameDB)
+    suspend fun insertGame(game : GameDB)
 
     suspend fun removeGameFromLibrary(game : GameDB)
 

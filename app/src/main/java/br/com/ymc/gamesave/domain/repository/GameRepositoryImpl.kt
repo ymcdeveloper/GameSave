@@ -1,10 +1,8 @@
-package br.com.ymc.gamesave.repositories
+package br.com.ymc.gamesave.domain.repository
 
-import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.network.RestApi
 import br.com.ymc.gamesave.util.Const
-import br.com.ymc.gamesave.util.EspressoIdlingResource
 import br.com.ymc.gamesave.util.Resource
 import br.com.ymc.gamesave.util.handleError
 import kotlinx.coroutines.delay

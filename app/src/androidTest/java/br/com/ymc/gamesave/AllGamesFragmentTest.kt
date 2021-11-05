@@ -1,7 +1,5 @@
 package br.com.ymc.gamesave
 
-import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
@@ -12,9 +10,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.com.ymc.gamesave.adapter.AllGamesAdapter
-import br.com.ymc.gamesave.ui.activities.GameDetailActivity
 import br.com.ymc.gamesave.ui.activities.MainActivity
 import br.com.ymc.gamesave.util.EspressoIdlingResource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
@@ -22,6 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class AllGamesFragmentTest
 {

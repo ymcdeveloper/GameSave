@@ -1,9 +1,8 @@
-package br.com.ymc.gamesave.repositories
+package br.com.ymc.gamesave.domain.repository
 
 import br.com.ymc.gamesave.db.dao.GameDAO
 import br.com.ymc.gamesave.db.model.GameDB
 import br.com.ymc.gamesave.db.model.toGame
-import br.com.ymc.gamesave.domain.repository.DatabaseRepository
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +44,7 @@ class DatabaseRepositoryImpl @Inject constructor(private val gameDAO: GameDAO) :
         }
     }
 
-    override suspend fun saveGameToLibrary(game: GameDB)
+    override suspend fun insertGame(game: GameDB)
     {
         gameDAO.insertGame(game)
     }

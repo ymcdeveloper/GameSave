@@ -12,7 +12,7 @@ import br.com.ymc.gamesave.db.model.GameDB
 @Database(entities = [GameDB::class], version = 4)
 abstract class AppDatabase : RoomDatabase()
 {
-    abstract fun getGameDao(): GameDAO
+    abstract fun gameDao(): GameDAO
 
     companion object
     {

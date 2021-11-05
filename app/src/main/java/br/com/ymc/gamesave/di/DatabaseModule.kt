@@ -4,10 +4,7 @@ import android.content.Context
 import br.com.ymc.gamesave.db.AppDatabase
 import br.com.ymc.gamesave.db.dao.GameDAO
 import br.com.ymc.gamesave.domain.repository.DatabaseRepository
-import br.com.ymc.gamesave.domain.repository.GameRepository
-import br.com.ymc.gamesave.network.RestApi
-import br.com.ymc.gamesave.repositories.DatabaseRepositoryImpl
-import br.com.ymc.gamesave.repositories.GameRepositoryImpl
+import br.com.ymc.gamesave.domain.repository.DatabaseRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +26,7 @@ object DatabaseModule
     @Provides
     fun gameDao(appDatabase: AppDatabase): GameDAO
     {
-        return appDatabase.getGameDao()
+        return appDatabase.gameDao()
     }
 
     @Provides

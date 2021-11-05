@@ -2,13 +2,12 @@ package br.com.ymc.gamesave.di
 
 import br.com.ymc.gamesave.domain.repository.GameRepository
 import br.com.ymc.gamesave.network.RestApi
-import br.com.ymc.gamesave.repositories.GameRepositoryImpl
+import br.com.ymc.gamesave.domain.repository.GameRepositoryImpl
 import br.com.ymc.gamesave.util.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
