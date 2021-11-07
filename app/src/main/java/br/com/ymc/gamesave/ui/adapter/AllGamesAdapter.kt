@@ -1,6 +1,5 @@
-package br.com.ymc.gamesave.adapter
+package br.com.ymc.gamesave.ui.adapter
 
-import android.graphics.ColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView

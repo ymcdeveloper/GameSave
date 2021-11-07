@@ -2,9 +2,8 @@ package br.com.ymc.gamesave.ui.games
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import br.com.ymc.gamesave.domain.repository.GameRepository
-import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCase
-import br.com.ymc.gamesave.domain.use_case.api_use_case.SearchGameUseCase
+import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCaseImpl
+import br.com.ymc.gamesave.domain.use_case.api_use_case.SearchGameUseCaseImpl
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.ui.games.Utility.MainCoroutineRule
 import br.com.ymc.gamesave.util.Resource
@@ -13,13 +12,9 @@ import br.com.ymc.gamesave.viewModels.UIState
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.hasItems
 import org.hamcrest.MatcherAssert
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -60,8 +55,8 @@ class SearchGameUseCaseTest
         )
         val mockSuccess = MockGameRepository(Resource.Success(games))
 
-        val getGamesUseCase = GetGamesUseCase(mockSuccess)
-        val getSearchGame = SearchGameUseCase(mockSuccess)
+        val getGamesUseCase = GetGamesUseCaseImpl(mockSuccess)
+        val getSearchGame = SearchGameUseCaseImpl(mockSuccess)
         viewModel = AllGamesViewModel(getGamesUseCase, getSearchGame)
         viewModel.gamesList.observeForever(_gamesListObserver)
         viewModel.state.observeForever(_stateObserver)
@@ -86,8 +81,8 @@ class SearchGameUseCaseTest
         // Arrange
         val mockError = MockGameRepository(Resource.Error("Error to load games"))
 
-        val getGamesUseCase = GetGamesUseCase(mockError)
-        val getSearchGame = SearchGameUseCase(mockError)
+        val getGamesUseCase = GetGamesUseCaseImpl(mockError)
+        val getSearchGame = SearchGameUseCaseImpl(mockError)
         viewModel = AllGamesViewModel(getGamesUseCase, getSearchGame)
         viewModel.gamesList.observeForever(_gamesListObserver)
         viewModel.state.observeForever(_stateObserver)

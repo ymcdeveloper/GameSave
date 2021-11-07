@@ -12,36 +12,14 @@ import javax.inject.Inject
 
 class DatabaseRepositoryImpl @Inject constructor(private val gameDAO: GameDAO) : DatabaseRepository
 {
-    override suspend fun getSavedGames(): Flow<Resource<List<Game>>>
+    override suspend fun getSavedGames(): List<Game>
     {
-        return flow {
-            try
-            {
-                emit(Resource.Loading())
-                val games = gameDAO.selectSavedGames().map { it.toGame() }
-                emit(Resource.Success(games))
-            }
-            catch (e: Exception)
-            {
-                emit(Resource.Error(e.localizedMessage ?: "Unknown error in getSavedGames"))
-            }
-        }
+        return gameDAO.selectSavedGames().map { it.toGame() }
     }
 
-    override suspend fun getGame(id: Int): Flow<Resource<Game>>
+    override suspend fun getGame(id: Int): Game
     {
-        return flow {
-            try
-            {
-                emit(Resource.Loading())
-                val game = gameDAO.selectGameById(id).toGame()
-                emit(Resource.Success(game))
-            }
-            catch (e: Exception)
-            {
-                emit(Resource.Error(e.localizedMessage ?: "Unknown error in getSavedGames"))
-            }
-        }
+        return gameDAO.selectGameById(id).toGame()
     }
 
     override suspend fun insertGame(game: GameDB)
@@ -59,16 +37,20 @@ class DatabaseRepositoryImpl @Inject constructor(private val gameDAO: GameDAO) :
         return gameDAO.gameExists(id)
     }
 
-    override suspend fun filterGames(games : List<Game>, filterQuery: String): Flow<Resource<List<Game>>>
-    {
-        return flow {
-            val filteredGames = games.filter { game ->
-                game.name.lowercase().contains(filterQuery.lowercase())
-            }
-
-            emit(Resource.Success(filteredGames))
-        }
-    }
+//    override suspend fun filterGames(games : List<Game>, filterQuery: String): List<Game>
+//    {
+//        return games.filter { game ->
+//            game.name.lowercase().contains(filterQuery.lowercase())
+//        }
+//
+//        return flow {
+//            val filteredGames = games.filter { game ->
+//                game.name.lowercase().contains(filterQuery.lowercase())
+//            }
+//
+//            emit(Resource.Success(filteredGames))
+//        }
+//    }
 
     override suspend fun getCount(): Int
     {

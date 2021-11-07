@@ -1,4 +1,4 @@
-package br.com.ymc.gamesave.adapter
+package br.com.ymc.gamesave.ui.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

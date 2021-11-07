@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface DatabaseRepository
 {
-    suspend fun getSavedGames() : Flow<Resource<List<Game>>>
+    suspend fun getSavedGames() : List<Game>
 
-    suspend fun getGame(id : Int) : Flow<Resource<Game>>
+    suspend fun getGame(id : Int) : Game
 
     suspend fun insertGame(game : GameDB)
 
@@ -17,7 +17,7 @@ interface DatabaseRepository
 
     suspend fun checkGameExists(id : Int) : Boolean
 
-    suspend fun filterGames(games : List<Game>, filterQuery : String) : Flow<Resource<List<Game>>>
+//    suspend fun filterGames(games : List<Game>, filterQuery : String) : List<Game>
 
     suspend fun getCount() : Int
 }

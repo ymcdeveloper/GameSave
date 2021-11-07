@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGameDetailUseCase
+import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGameDetailUseCaseImpl
 import br.com.ymc.gamesave.domain.use_case.db_use_case.CheckGameExistsUseCase
 import br.com.ymc.gamesave.domain.use_case.db_use_case.DeleteGameUseCase
 import br.com.ymc.gamesave.domain.use_case.db_use_case.GetDBGameDetailUseCase
@@ -12,7 +13,6 @@ import br.com.ymc.gamesave.domain.use_case.db_use_case.SaveGameUseCase
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.model.toGameDB
 import br.com.ymc.gamesave.util.Resource
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

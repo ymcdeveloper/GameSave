@@ -1,17 +1,15 @@
 package br.com.ymc.gamesave.ui.activities
 
 import android.os.Bundle
-import android.view.DragEvent
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import br.com.ymc.gamesave.R
-import br.com.ymc.gamesave.adapter.MainViewPagerAdapter
+import br.com.ymc.gamesave.ui.adapter.MainViewPagerAdapter
 import br.com.ymc.gamesave.databinding.ActivityMainBinding
 import br.com.ymc.gamesave.ui.activities.fragments.AllGamesFragment
 import br.com.ymc.gamesave.ui.activities.fragments.InfoFragment

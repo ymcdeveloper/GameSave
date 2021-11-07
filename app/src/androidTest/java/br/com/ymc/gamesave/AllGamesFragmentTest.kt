@@ -9,7 +9,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.com.ymc.gamesave.adapter.AllGamesAdapter
+import br.com.ymc.gamesave.ui.adapter.AllGamesAdapter
 import br.com.ymc.gamesave.ui.activities.MainActivity
 import br.com.ymc.gamesave.util.EspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi

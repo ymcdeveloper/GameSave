@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import br.com.ymc.gamesave.adapter.AllGamesAdapter
+import br.com.ymc.gamesave.ui.adapter.AllGamesAdapter
 import br.com.ymc.gamesave.databinding.FragmentAllGamesBinding
 import br.com.ymc.gamesave.model.Game
 import br.com.ymc.gamesave.ui.activities.GameDetailActivity
