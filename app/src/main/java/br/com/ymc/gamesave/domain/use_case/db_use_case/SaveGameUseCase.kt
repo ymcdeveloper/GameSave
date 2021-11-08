@@ -4,10 +4,7 @@ import br.com.ymc.gamesave.db.model.GameDB
 import br.com.ymc.gamesave.domain.repository.DatabaseRepository
 import javax.inject.Inject
 
-class SaveGameUseCase @Inject constructor(private val repository: DatabaseRepository)
+interface SaveGameUseCase
 {
     suspend operator fun invoke(game : GameDB)
-    {
-        repository.insertGame(game)
-    }
 }

@@ -1,4 +1,4 @@
-package br.com.ymc.gamesave.ui.games.Utility
+package br.com.ymc.gamesave.ui.games.utility
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

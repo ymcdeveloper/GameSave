@@ -37,21 +37,6 @@ class DatabaseRepositoryImpl @Inject constructor(private val gameDAO: GameDAO) :
         return gameDAO.gameExists(id)
     }
 
-//    override suspend fun filterGames(games : List<Game>, filterQuery: String): List<Game>
-//    {
-//        return games.filter { game ->
-//            game.name.lowercase().contains(filterQuery.lowercase())
-//        }
-//
-//        return flow {
-//            val filteredGames = games.filter { game ->
-//                game.name.lowercase().contains(filterQuery.lowercase())
-//            }
-//
-//            emit(Resource.Success(filteredGames))
-//        }
-//    }
-
     override suspend fun getCount(): Int
     {
         return gameDAO.getCount()

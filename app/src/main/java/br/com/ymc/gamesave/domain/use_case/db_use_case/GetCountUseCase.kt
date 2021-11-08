@@ -7,10 +7,7 @@ import br.com.ymc.gamesave.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetCountUseCase @Inject constructor(private val repository: DatabaseRepository)
+interface GetCountUseCase
 {
     suspend operator fun invoke() : Int
-    {
-        return repository.getCount()
-    }
 }

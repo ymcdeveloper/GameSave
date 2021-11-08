@@ -7,10 +7,7 @@ import br.com.ymc.gamesave.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DeleteGameUseCase @Inject constructor(private val repository: DatabaseRepository)
+interface DeleteGameUseCase
 {
     suspend operator fun invoke(game : GameDB)
-    {
-        repository.removeGameFromLibrary(game)
-    }
 }

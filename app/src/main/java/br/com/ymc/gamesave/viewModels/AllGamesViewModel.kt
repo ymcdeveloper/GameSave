@@ -31,45 +31,45 @@ class AllGamesViewModel @Inject constructor(private val getGamesUseCase: GetGame
     private var searchJob: Job? = null
 
 
-    fun callGamesApi()
-    {
-        viewModelScope.launch {
-            getGamesUseCase().collect { result ->
-                when(result)
+    fun callGamesApi() = viewModelScope.launch {
+        getGamesUseCase().collect { result ->
+            when (result)
+            {
+                is Resource.Success ->
                 {
-                    is Resource.Success -> {
-                        EspressoIdlingResource.decrement()
-                        _gamesList.value = result.data
-                        _state.postValue(UIState.Success)
-                    }
-                    is Resource.Error ->
-                    {
-                        _state.postValue(UIState.Error(result.message ?: "Unknown error"))
-                    }
-                    is Resource.Loading ->
-                    {
-                        EspressoIdlingResource.increment()
-                        _state.postValue(UIState.Loading)
-                    }
-                    else -> Unit
+//                    EspressoIdlingResource.decrement()
+                    _gamesList.value = result.data
+                    _state.postValue(UIState.Success)
                 }
+                is Resource.Error ->
+                {
+                    _gamesList.value = listOf()
+                    _state.postValue(UIState.Error(result.message ?: "Unknown error"))
+                }
+                is Resource.Loading ->
+                {
+//                    EspressoIdlingResource.increment()
+                    _state.postValue(UIState.Loading)
+                }
+                else -> Unit
             }
         }
     }
 
     fun searchGame(query: String)
     {
-        EspressoIdlingResource.increment()
+//        EspressoIdlingResource.increment()
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
             searchGamesUseCase("'$query'").collect { result ->
-                when(result)
+                when (result)
                 {
-                    is Resource.Success -> {
+                    is Resource.Success ->
+                    {
                         _gamesList.value = result.data
                         _state.postValue(UIState.Success)
-                        EspressoIdlingResource.decrement()
+//                        EspressoIdlingResource.decrement()
                     }
                     is Resource.Error ->
                     {

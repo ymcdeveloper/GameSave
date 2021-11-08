@@ -10,21 +10,7 @@ import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 import javax.inject.Inject
 
-class GetDBGameDetailUseCase @Inject constructor(private val repository: DatabaseRepository)
+interface GetDBGameDetailUseCase
 {
     suspend operator fun invoke(id: Int): Flow<Resource<Game>>
-    {
-        return flow {
-            try
-            {
-                emit(Resource.Loading())
-                val game = repository.getGame(id)
-                emit(Resource.Success(game))
-            }
-            catch (e: Exception)
-            {
-                emit(Resource.Error(e.localizedMessage ?: "Unknown error in getSavedGames"))
-            }
-        }
-    }
 }
