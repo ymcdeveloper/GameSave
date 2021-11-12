@@ -1,39 +1,41 @@
 package br.com.ymc.gamesave.db.dao
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import br.com.ymc.gamesave.db.AppDatabase
 import br.com.ymc.gamesave.db.model.GameDB
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
 @SmallTest
+@HiltAndroidTest
 class GameDAOTest
 {
-    @get:Rule
+    @get:Rule(order = 0)
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var database: AppDatabase
+    @get:Rule(order = 1)
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    @Named("test_db")
+    lateinit var database: AppDatabase
     private lateinit var dao : GameDAO
 
     @Before
     fun setup()
     {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            AppDatabase::class.java
-        ).allowMainThreadQueries().build()
+        hiltRule.inject()
         dao = database.gameDao()
     }
 
@@ -44,7 +46,7 @@ class GameDAOTest
     }
 
     @Test
-    fun insertGame() = runBlockingTest {
+    fun insertGameTest() = runBlockingTest {
         val insertedGame = GameDB(1, "Test", "", "", "Teste", null, 50f)
         dao.insertGame(insertedGame)
 
@@ -54,7 +56,7 @@ class GameDAOTest
     }
 
     @Test
-    fun deleteGame() = runBlockingTest {
+    fun deleteGameTest() = runBlockingTest {
         val insertedGame = GameDB(1, "Test", "", "", "Teste", null, 50f)
         dao.insertGame(insertedGame)
         dao.deleteGame(insertedGame)
@@ -65,7 +67,7 @@ class GameDAOTest
     }
 
     @Test
-    fun checkGameExists() = runBlockingTest {
+    fun checkGameExistsTest() = runBlockingTest {
         val insertedGame = GameDB(1, "Test", "", "", "Teste", null, 50f)
         dao.insertGame(insertedGame)
 
@@ -73,4 +75,29 @@ class GameDAOTest
 
         assertThat(exists).isTrue()
     }
+
+    @Test
+    fun checkGamesCount() = runBlockingTest {
+        val insertedGames = listOf(
+            GameDB(1, "Test", "", "", "Teste", null, 50f),
+            GameDB(2, "Test2", "", "", "Teste2", null, 100f)
+        )
+
+        for(game in insertedGames)
+        {
+            dao.insertGame(game)
+        }
+
+        val count = dao.getCount()
+
+        assertThat(count).isEqualTo(2)
+    }
+
+//    @Test
+//    fun testLaunchFragmentInHiltContainer()
+//    {
+//        launchFragmentInHiltContainer<AllGamesFragment> {
+//
+//        }
+//    }
 }

@@ -11,8 +11,11 @@ import br.com.ymc.gamesave.viewModels.AllGamesViewModel
 import br.com.ymc.gamesave.viewModels.UIState
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -80,6 +83,30 @@ class AllGamesViewModelTest
 
         // Assert
         assertThat(stateValue).isEqualTo(UIState.Error("Error"))
+        assertThat(gameListValue).isEmpty()
+    }
+
+    @Test
+    fun searchGameTest() = coroutineRule.runBlockingTest {
+        // Arrange
+        val games = listOf(
+            Game(null, 1, "test1", "test Summary", 100f, null, ""),
+            Game(null, 12, "daniel", "test Summary", 100f, null, "")
+        )
+        val getGamesUseCase = MockGetGamesUseCase(Resource.Success(games))
+        val searchGameUseCase = MockSearchGamesUseCase(Resource.Success(games))
+
+        viewModel = AllGamesViewModel(getGamesUseCase, searchGameUseCase)
+
+        viewModel.searchGame("daniel")
+
+        advanceUntilIdle()
+
+        val gameListValue = viewModel.gamesList.getOrAwaitValueTest()
+        val stateValue = viewModel.state.getOrAwaitValueTest()
+
+        assertThat(gameListValue).contains(games[1])
+        assertThat(stateValue).isEqualTo(UIState.Success)
     }
 }
 
@@ -98,7 +125,13 @@ class MockSearchGamesUseCase(private val result: Resource<List<Game>>) : SearchG
     override suspend fun invoke(searchQuery: String): Flow<Resource<List<Game>>>
     {
         return flow {
-            emit(result)
+            val newSearchQuery = searchQuery.replace("'", "")
+//            emit(Resource.Loading())
+            val data = result.data?.filter {
+                it.name == newSearchQuery
+            }
+
+            emit(Resource.Success(data!!))
         }
     }
 }

@@ -5,13 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCase
-import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCaseImpl
 import br.com.ymc.gamesave.domain.use_case.api_use_case.SearchGameUseCase
-import br.com.ymc.gamesave.domain.use_case.api_use_case.SearchGameUseCaseImpl
 import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.util.EspressoIdlingResource
 import br.com.ymc.gamesave.util.Resource
-import br.com.ymc.gamesave.util.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
