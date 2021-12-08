@@ -141,16 +141,21 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
         {
             binding.fabAdd ->
             {
-                viewModel.game.let {
+                viewModel.game.let { game ->
                     if(viewModel.isGameAdded.value!!)
                     {
-                        viewModel.gameDeleted = true
-                        viewModel.deleteGame()
+                        game.value?.let {
+                            viewModel.deleteGame(it)
+                        }
+
                         Snackbar.make(binding.root, R.string.game_deleted, Snackbar.LENGTH_LONG).show()
                     }
                     else
                     {
-                        viewModel.insertGameToDB()
+                        game.value?.let {
+                            viewModel.insertGameToDB(it)
+                        }
+
                         Snackbar.make(binding.root, R.string.game_added, Snackbar.LENGTH_LONG).show()
                     }
                 }
@@ -164,10 +169,12 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
 
     override fun onBackPressed()
     {
-        if(viewModel.gameDeleted)
-        {
-            setResult(RESULT_OK)
-        }
+        viewModel.isGameDeleted.observe(this, {
+            if(it)
+            {
+                setResult(RESULT_OK)
+            }
+        })
 
         finish()
     }

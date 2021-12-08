@@ -33,7 +33,9 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
     var state : LiveData<UIState> = _state
 
     //Variables
-    var gameDeleted : Boolean = false
+    private val _isGameDeleted : MutableLiveData<Boolean> = MutableLiveData(false)
+    val isGameDeleted : LiveData<Boolean> = _isGameDeleted
+
     private var id = -1
 
     fun getGame(gameId : Int)
@@ -72,6 +74,7 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
                     {
                         is Resource.Success -> {
                             _game.postValue(result.data)
+                            _state.postValue(UIState.Success)
                         }
 
                         is Resource.Error -> {
@@ -87,10 +90,10 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
         }
     }
 
-    fun insertGameToDB()
+    fun insertGameToDB(gameAux : Game)
     {
         viewModelScope.launch {
-            game.value?.let { saveGameUseCase(it.toGameDB()) }
+            saveGameUseCase(gameAux.toGameDB())
         }
     }
 
@@ -101,11 +104,12 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
         }
     }
 
-    fun deleteGame()
+    fun deleteGame(gameAux : Game)
     {
         viewModelScope.launch {
-            game.value?.let {
+            gameAux.let {
                 deleteGameUseCase(it.toGameDB())
+                _isGameDeleted.value = true
             }
         }
     }
