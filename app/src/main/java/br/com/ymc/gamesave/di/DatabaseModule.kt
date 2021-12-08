@@ -1,8 +1,8 @@
 package br.com.ymc.gamesave.di
 
 import android.content.Context
-import br.com.ymc.gamesave.db.AppDatabase
-import br.com.ymc.gamesave.db.dao.GameDAO
+import br.com.ymc.gamesave.data.local.AppDatabase
+import br.com.ymc.gamesave.data.local.dao.GameDAO
 import br.com.ymc.gamesave.domain.repository.DatabaseRepository
 import br.com.ymc.gamesave.domain.repository.DatabaseRepositoryImpl
 import dagger.Module

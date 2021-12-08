@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.ymc.gamesave.core.util.Resource
+import br.com.ymc.gamesave.data.remote.dto.Game
+import br.com.ymc.gamesave.data.remote.dto.toGameDB
 import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGameDetailUseCase
-import br.com.ymc.gamesave.domain.use_case.db_use_case.CheckGameExistsUseCaseImpl
-import br.com.ymc.gamesave.domain.use_case.db_use_case.DeleteGameUseCaseImpl
-import br.com.ymc.gamesave.domain.use_case.db_use_case.GetDBGameDetailUseCaseImpl
-import br.com.ymc.gamesave.domain.use_case.db_use_case.SaveGameUseCaseImpl
-import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.model.toGameDB
-import br.com.ymc.gamesave.util.Resource
+import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGameDetailUseCaseImpl
+import br.com.ymc.gamesave.domain.use_case.db_use_case.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -19,10 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: GetGameDetailUseCase,
-                                              private val getDBGameDetailUseCase: GetDBGameDetailUseCaseImpl,
-                                              private val deleteGameUseCase: DeleteGameUseCaseImpl,
-                                              private val saveGameUseCase: SaveGameUseCaseImpl,
-                                              private val checkGameExistsUseCase: CheckGameExistsUseCaseImpl) : ViewModel()
+                                              private val getDBGameDetailUseCase: GetDBGameDetailUseCase,
+                                              private val deleteGameUseCase: DeleteGameUseCase,
+                                              private val saveGameUseCase: SaveGameUseCase,
+                                              private val checkGameExistsUseCase: CheckGameExistsUseCase) : ViewModel()
 {
     //LiveData values
     private val _game : MutableLiveData<Game> = MutableLiveData()

@@ -2,8 +2,9 @@ package br.com.ymc.gamesave.db.dao
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.filters.SmallTest
-import br.com.ymc.gamesave.db.AppDatabase
-import br.com.ymc.gamesave.db.model.GameDB
+import br.com.ymc.gamesave.data.local.dao.GameDAO
+import br.com.ymc.gamesave.data.local.AppDatabase
+import br.com.ymc.gamesave.data.local.entity.GameDB
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.ymc.gamesave.domain.use_case.db_use_case.*
-import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.util.Resource
+import br.com.ymc.gamesave.core.util.Resource
+import br.com.ymc.gamesave.data.remote.dto.Game
+import br.com.ymc.gamesave.domain.use_case.db_use_case.FilterSavedGamesUseCase
+import br.com.ymc.gamesave.domain.use_case.db_use_case.GetCountUseCase
+import br.com.ymc.gamesave.domain.use_case.db_use_case.GetSavedGamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

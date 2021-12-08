@@ -2,7 +2,7 @@ package br.com.ymc.gamesave.di
 
 import android.content.Context
 import androidx.room.Room
-import br.com.ymc.gamesave.db.AppDatabase
+import br.com.ymc.gamesave.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

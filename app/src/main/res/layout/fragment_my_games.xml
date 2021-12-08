@@ -7,7 +7,7 @@
     android:background="@color/black"
     android:orientation="vertical"
     android:id="@+id/my_games_parent"
-    tools:context=".ui.activities.fragments.MyGamesFragment">
+    tools:context=".presentation.activities.fragments.MyGamesFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"

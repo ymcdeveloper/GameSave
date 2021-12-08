@@ -1,25 +1,37 @@
 package br.com.ymc.gamesave.domain.repository
 
-import br.com.ymc.gamesave.db.dao.GameDAO
-import br.com.ymc.gamesave.db.model.GameDB
-import br.com.ymc.gamesave.db.model.toGame
-import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.util.Resource
+import br.com.ymc.gamesave.core.util.Resource
+import br.com.ymc.gamesave.data.local.dao.GameDAO
+import br.com.ymc.gamesave.data.local.entity.GameDB
+import br.com.ymc.gamesave.data.local.entity.toGame
+import br.com.ymc.gamesave.data.remote.dto.Game
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 import javax.inject.Inject
 
 class DatabaseRepositoryImpl @Inject constructor(private val gameDAO: GameDAO) : DatabaseRepository
 {
-    override suspend fun getSavedGames(): List<Game>
-    {
-        return gameDAO.selectSavedGames().map { it.toGame() }
+    override suspend fun getSavedGames(): Flow<Resource<List<Game>>> = flow {
+
+        emit(Resource.Loading())
+
+        val games = gameDAO.selectSavedGames().map { it.toGame() }
+
+        emit(Resource.Success(games))
+    }.catch { e ->
+        emit(Resource.Error(e.localizedMessage ?: "Error to get saved games."))
     }
 
-    override suspend fun getGame(id: Int): Game
-    {
-        return gameDAO.selectGameById(id).toGame()
+    override suspend fun getGame(id: Int): Flow<Resource<Game>> = flow {
+
+        emit(Resource.Loading())
+
+        val game = gameDAO.selectGameById(id).toGame()
+
+        emit(Resource.Success(game))
+    }.catch { e ->
+        emit(Resource.Error(e.localizedMessage ?: "Error to get saved games."))
     }
 
     override suspend fun insertGame(game: GameDB)

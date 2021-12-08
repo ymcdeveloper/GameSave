@@ -1,9 +1,9 @@
 package br.com.ymc.gamesave.domain.use_case.api_use_case
 
+import br.com.ymc.gamesave.core.util.Resource
+import br.com.ymc.gamesave.core.util.handleError
+import br.com.ymc.gamesave.data.remote.dto.Game
 import br.com.ymc.gamesave.domain.repository.GameRepository
-import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.util.Resource
-import br.com.ymc.gamesave.util.handleError
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,23 +15,6 @@ class GetGameDetailUseCaseImpl @Inject constructor(private val repository: GameR
 {
     override suspend operator fun invoke(id: Int): Flow<Resource<Game>>
     {
-        return flow {
-            emit(Resource.Loading())
-
-            val response = repository.getGameById(id)
-
-            if (response.isSuccessful)
-            {
-                emit(Resource.Success(response.body()!![0]))
-            } else
-            {
-                emit(Resource.Error(response.code().handleError()))
-            }
-
-        }.retry(2) { e ->
-            (e is Exception).also { if (it) delay(500) }
-        }.catch { e ->
-            emit(Resource.Error(e.handleError()))
-        }
+        return repository.getGameById(id)
     }
 }

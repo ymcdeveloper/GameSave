@@ -1,12 +1,9 @@
 package br.com.ymc.gamesave.di
 
 import br.com.ymc.gamesave.domain.repository.GameRepository
-import br.com.ymc.gamesave.network.RestApi
+import br.com.ymc.gamesave.data.remote.RestApi
 import br.com.ymc.gamesave.domain.repository.GameRepositoryImpl
-import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCase
-import br.com.ymc.gamesave.domain.use_case.api_use_case.GetGamesUseCaseImpl
-import br.com.ymc.gamesave.util.Const
-import dagger.Binds
+import br.com.ymc.gamesave.core.util.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

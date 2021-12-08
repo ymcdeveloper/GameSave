@@ -7,19 +7,15 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.com.ymc.gamesave.di.TestAppModule
-import br.com.ymc.gamesave.ui.activities.MainActivity
-import br.com.ymc.gamesave.ui.adapter.AllGamesAdapter
+import br.com.ymc.gamesave.presentation.activities.MainActivity
+import br.com.ymc.gamesave.presentation.adapter.AllGamesAdapter
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 //@UninstallModules(TestAppModule::class)
 @ExperimentalCoroutinesApi

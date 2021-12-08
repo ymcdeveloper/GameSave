@@ -3,8 +3,8 @@ package br.com.ymc.gamesave.repositories.old_repositories
 import androidx.lifecycle.MutableLiveData
 import br.com.ymc.gamesave.BuildConfig.CLIENT_ID
 import br.com.ymc.gamesave.BuildConfig.TOKEN
-import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.network.RestApi
+import br.com.ymc.gamesave.data.remote.RestApi
+import br.com.ymc.gamesave.data.remote.dto.Game
 import java.net.UnknownHostException
 import javax.inject.Inject
 

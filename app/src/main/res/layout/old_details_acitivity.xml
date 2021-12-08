@@ -7,7 +7,7 @@
     android:background="@color/light_gray"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".ui.activities.GameDetailActivity">
+    tools:context=".presentation.activities.GameDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"

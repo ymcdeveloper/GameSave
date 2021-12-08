@@ -1,13 +1,12 @@
 package br.com.ymc.gamesave.repositories.old_repositories
 
-import br.com.ymc.gamesave.db.dao.GameDAO
-import br.com.ymc.gamesave.db.model.toGame
-import br.com.ymc.gamesave.model.Game
-import br.com.ymc.gamesave.model.toGameDB
-import br.com.ymc.gamesave.util.Resource
+import br.com.ymc.gamesave.core.util.Resource
+import br.com.ymc.gamesave.data.local.dao.GameDAO
+import br.com.ymc.gamesave.data.local.entity.toGame
+import br.com.ymc.gamesave.data.remote.dto.Game
+import br.com.ymc.gamesave.data.remote.dto.toGameDB
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 import javax.inject.Inject
 
 class DatabaseRepositoryOLD @Inject constructor(private val gameDao: GameDAO)

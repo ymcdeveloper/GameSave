@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/info_parent"
-    tools:context=".ui.activities.fragments.InfoFragment">
+    tools:context=".presentation.activities.fragments.InfoFragment">
 
 
 
