@@ -11,9 +11,9 @@
         android:icon="@drawable/ic_cloud_outline"
         android:title="@string/my_games"/>
 
-    <item
-        android:id="@+id/menu_info"
-        android:icon="@drawable/ic_info_outline"
-        android:title="@string/info" />
+<!--    <item-->
+<!--        android:id="@+id/menu_info"-->
+<!--        android:icon="@drawable/ic_info_outline"-->
+<!--        android:title="@string/info" />-->
 
 </menu>

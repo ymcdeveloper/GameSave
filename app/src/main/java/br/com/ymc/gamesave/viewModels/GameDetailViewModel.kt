@@ -78,7 +78,7 @@ class GameDetailViewModel @Inject constructor(private val getGameDetailUseCase: 
                         }
 
                         is Resource.Error -> {
-                            _state.postValue(UIState.Error(result.message ?: "Unknown Error"))
+                            _state.postValue(UIState.Error("Game not found. Check your internet and try again."))
                         }
 
                         is Resource.Loading -> {

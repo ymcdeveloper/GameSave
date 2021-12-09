@@ -178,11 +178,4 @@ class GameDetailActivity : AppCompatActivity(), View.OnClickListener
 
         finish()
     }
-
-    //    private fun hideAppBarFab(fab: FloatingActionButton) {
-//        val params = fab.layoutParams as CoordinatorLayout.LayoutParams
-//        val behavior = params.behavior as FloatingActionButton.Behavior
-//        behavior.isAutoHideEnabled = false
-//        fab.hide()
-//    }
 }

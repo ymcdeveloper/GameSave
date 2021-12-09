@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
 
     private val allGamesFragment = AllGamesFragment()
     private val myGamesFragment = MyGamesFragment()
-    private val infoFragment = InfoFragment()
+//    private val infoFragment = InfoFragment()
 
     private val allGamesViewModel : AllGamesViewModel by viewModels()
     private val myGamesViewModel : MyGamesViewModel by viewModels()
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
     val fragments: ArrayList<Fragment> = arrayListOf(
         allGamesFragment,
         myGamesFragment,
-        infoFragment
+//        infoFragment
     )
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
 
     private fun setupViewPager()
     {
-        binding.viewPager.offscreenPageLimit = 3
+        binding.viewPager.offscreenPageLimit = 1
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int)
             {
@@ -106,12 +106,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Search
                 myGamesViewModel.shouldReload()
             }
 
-            R.id.menu_info ->
-            {
-                binding.txtHeader.text = getString(R.string.info)
-                binding.imgSearch.visibility = View.GONE
-                binding.viewPager.currentItem = 2
-            }
+//            R.id.menu_info ->
+//            {
+//                binding.txtHeader.text = getString(R.string.info)
+//                binding.imgSearch.visibility = View.GONE
+//                binding.viewPager.currentItem = 2
+//            }
         }
     }
 
