@@ -72,7 +72,8 @@ class FakeRepository : GameRepository
             }
             else
             {
-                val filteredGames = games.filter { it.name.contains("searchQuery") }
+                val replacedSearchQuery = searchQuery.replace("'", "")
+                val filteredGames = games.filter { it.name.contains(replacedSearchQuery) }
 
                 emit(Resource.Success(filteredGames))
                 return@flow

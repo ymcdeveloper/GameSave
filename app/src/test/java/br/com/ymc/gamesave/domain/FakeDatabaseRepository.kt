@@ -25,7 +25,7 @@ class FakeDatabaseRepository : DatabaseRepository
         return flow {
             if(shouldReturnError)
             {
-                emit(Resource.Error("Test exception"))
+                emit(Resource.Error("Error"))
             }
             else
             {

@@ -19,21 +19,20 @@ class MyGamesViewModel @Inject constructor(private val getSavedGamesUseCase: Get
                                            private val  filterSavedGamesUseCase: FilterSavedGamesUseCase,
                                            private val getCountUseCase : GetCountUseCase) : ViewModel()
 {
-    private var _arrGames : MutableLiveData<List<Game>> = MutableLiveData()
-    var arrGames : LiveData<List<Game>> = _arrGames
+    private var _gamesList : MutableLiveData<List<Game>> = MutableLiveData()
+    var gamesList : LiveData<List<Game>> = _gamesList
 
     private var _state : MutableLiveData<UIState> = MutableLiveData()
     var state : LiveData<UIState> = _state
 
-    fun loadGames()
-    {
+    fun loadGames() {
         viewModelScope.launch {
             getSavedGamesUseCase().collect { result ->
                 when(result)
                 {
                     is Resource.Success -> {
                         _state.postValue(UIState.Success)
-                        _arrGames.postValue(result.data)
+                        _gamesList.postValue(result.data)
                     }
 
                     is Resource.Error -> {
@@ -57,8 +56,8 @@ class MyGamesViewModel @Inject constructor(private val getSavedGamesUseCase: Get
         }
 
         viewModelScope.launch {
-            filterSavedGamesUseCase(_arrGames.value!!, searchText).collect {
-                _arrGames.postValue(it.data)
+            filterSavedGamesUseCase(_gamesList.value!!, searchText).collect {
+                _gamesList.postValue(it.data)
             }
         }
     }
@@ -66,7 +65,7 @@ class MyGamesViewModel @Inject constructor(private val getSavedGamesUseCase: Get
     fun shouldReload()
     {
         viewModelScope.launch {
-            if(_arrGames.value?.size != getCountUseCase())
+            if(_gamesList.value?.size != getCountUseCase())
             {
                 loadGames()
             }

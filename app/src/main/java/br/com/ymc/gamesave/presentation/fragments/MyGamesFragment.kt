@@ -86,7 +86,7 @@ class MyGamesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
     private fun setupObservers()
     {
-        viewModel.arrGames.observe(viewLifecycleOwner) { result ->
+        viewModel.gamesList.observe(viewLifecycleOwner) { result ->
             setupList(result)
         }
 
